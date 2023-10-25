@@ -1,6 +1,6 @@
 # FrugalFeasts
 
-This template should help get you started developing with Vue 3 in Vite.
+Frugal Feasts is a web application that connects bakeries and whole food retailers to customers with the aim of reducing food wastage.
 
 ## Recommended IDE Setup
 
