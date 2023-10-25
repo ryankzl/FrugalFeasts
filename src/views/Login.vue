@@ -23,7 +23,7 @@ export default{
 .login{
     text-align: center;
     background-color: cyan;
-    margin-top: 100px;
+    
 }
 
 </style>

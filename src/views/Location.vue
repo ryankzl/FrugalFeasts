@@ -1,6 +1,6 @@
 <template>
 
-    <div class="container-fluid border border-danger border-5 location background">
+    <div class="container-fluid location background">
 
         <h1>Location Page</h1>
 
@@ -74,11 +74,6 @@ export default {
 .button {
     background-color: red;
     color: white;
-}
-
-/* Style for dot circle icon */
-.dot.circle.icon {
-    /* Define your styles here */
 }
 
 .background {
