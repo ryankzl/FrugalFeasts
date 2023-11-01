@@ -39,6 +39,7 @@ import {RouterLink} from 'vue-router';
                                 <li class="nav-item">
                                     <router-link to="/Profile" class="nav-link"> Profile </router-link>
                                 </li>
+
                             </ul>
                         </div>
                                 
