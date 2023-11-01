@@ -1,11 +1,63 @@
 <template>
+    <div class="container-fluid body">
+        <section class="nes-container">
+            <section class="message-list">
+                <section class="message -left ">
+                    <img src="/src/assets/mushroom.jpg" style="width: 150px; height: 150px; border: solid black 5px;">
+                    <!-- Balloon -->
+                    <div class="nes-balloon from-left">
+                    <p>Our application: Frugal Feasts</p>
+                    </div>
+                </section>
+            
+            
+                <section class="message -right">
+                    <!-- Balloon -->
+                    <div class="nes-balloon from-right container-fluid" style="max-width: 83%;">
+                        <p>Our application collaborates with bakeries and food retailers to list their items nearing
+                            expiring dates for sale. We act as a middleman to connect these individuals to these stores for them to
+                            discover available deals. With this, we aim to allow food retailers to reduce their food waste as well as 
+                            for individuals to seek more affordable and sustainable food choices.
+                        </p>
+                    </div>
+                    <img src="/src/assets/humans.jpeg" style="width: 150px; height: 150px; border: solid black 5px;">
+                </section>
+            </section>
+        </section>
 
-    <div class="container-fluid border border-danger border-5 about_us">
-
-        <h1>This is the about us page</h1>
-
-        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Nemo odit dicta atque. Commodi iste nisi eveniet impedit in deleniti excepturi mollitia doloremque animi dolore eum ratione et, officiis ipsum quis.</p>
-
+        
+        <section class="nes-container">
+            <section class="message-list">
+                <div class="container">
+                    <section class="message -left">
+                        <img src="/src/assets/mushroom.jpg" style="width: 150px; height: 150px; border: solid black 5px;">
+                            <!-- Balloon -->
+                            <div class="nes-balloon from-left">
+                            <p>More about food waste</p>
+                            </div>
+                    </section>
+                </div>
+            
+            
+            <div class="container">
+                <section class="message -right">
+                    <!-- Balloon -->
+                    <div class="nes-balloon from-right" style="max-width: 83%;">
+                    <p>Food “waste” refers to food that is fit for consumption but consciously discarded at the 
+                        retail or consumption phases. Food waste is one of the biggest waste streams in Singapore and 
+                        the amount of food waste generated has grown by around 20% over the last 10 years. Food waste 
+                        makes up about half of the average 1.5kg of waste disposed of by each household in Singapore 
+                        daily. Of which, more than half of household food waste can be prevented. When food is wasted, 
+                        more food has to be sourced to meet the food demand and this affects our food security since 
+                        Singapore imports over 90% of our food supply. Hence, it is important for us to play our part 
+                        to reduce food waste.
+                    </p>
+                    </div>
+                    <img src="/src/assets/humans.jpeg" style="width: 150px; height: 150px; border: solid black 5px;">
+                </section>
+            </div>
+            </section>
+        </section>
     </div>
  
 </template>
@@ -20,10 +72,10 @@ export default{
 </script>
 
 <style scoped>
-.about_us{
-    text-align: center;
-    background-color: cyan;
-    margin-top: 100px;
+
+.body {
+    background-image: url("../assets/home_background.jpg");
+    max-width: 100%;
 }
 
 </style>
