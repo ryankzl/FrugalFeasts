@@ -2,7 +2,6 @@
 
     <div class="container-fluid">
         <div class="row row-cols-1 row-cols-md-2">
-            <!-- store name and details  -->
             <div class="col">
                 <div class="nes-container is-rounded is-centered">
                     <i class="nes-octocat animate"></i>
@@ -133,11 +132,7 @@ export default{
 </script>
 
 <style scoped>
-.about_us{
-    text-align: center;
-    background-color: cyan;
-    margin-top: 100px;
-}
+
 
 </style>
 

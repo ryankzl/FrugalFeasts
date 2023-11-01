@@ -40,9 +40,6 @@ import {RouterLink} from 'vue-router';
                                     <router-link to="/Profile" class="nav-link"> Profile </router-link>
                                 </li>
 
-                                <li class="nav-item">
-                                    <router-link to="/Store" class="nav-link"> Store </router-link>
-                                </li>
                             </ul>
                         </div>
                                 
