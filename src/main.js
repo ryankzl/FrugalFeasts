@@ -11,13 +11,15 @@ import App from './App.vue'
 import router from './router'
 import VueGoogleMaps from '@fawmi/vue-google-maps'
 
+const VITE_GOOGLE_MAP_API_KEY = import.meta.env.VITE_GOOGLE_MAP_API_KEY;
+
 const app = createApp(App)
 
 app.use(router)
 
 app.use(VueGoogleMaps, {
     load: {
-        key: "AIzaSyCEylNlPDVXx01GS9tQYb9NZ1_2fpZVDPI",
+        key: VITE_GOOGLE_MAP_API_KEY,
         libraries: "places",
         callback: "initMap",
         V: "weekly",
