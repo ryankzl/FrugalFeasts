@@ -4,14 +4,15 @@
 
         <h1>Location Page</h1>
 
-        <section class="two column centered grid">
+        <section class="ui two column centered grid">
         <div class="column">
-            <form class=" segment large form">
-                <div class=" message red"></div>
-                <div class=" segment">
+            <form class=" ui segment large form">
+                <div class=" ui message red" v-show="error">{{ error }}</div>
+                <div class=" ui segment">
                     <div class="field">
-                        <div class=" right icon input large">
-                            <input type="text" placeholder="Enter your Address" />
+                        <div class=" ui right icon input large" :class="{loading:spinner}">
+                            <input type="text" placeholder="Enter your Address" v-model="address" />
+                            <button type="button" @click="locatorButtonPressed">Click Me</button>
                         </div>
                     </div>
                     <button class=" button">Go</button>
@@ -38,13 +39,16 @@
             @click="center=m.position"
         />
       </GMapCluster>
-    </GMapMap>
-  </div>
+      </GMapMap>
+    </div>
  
 </template>
 
 
 <script>
+
+// import axios from 'axios'
+
 export default {
   name: 'App',
   data() {
@@ -59,8 +63,59 @@ export default {
         , // Along list of clusters
       ]
     }
+  },
+  // data() {
+  //   return {
+  //     address: "",
+  //     error:"",
+  //     spinner: false,
+  //   }
+  // },
+
+//   methods: {
+//     locatorButtonPressed() {
+
+//       this.spinner = true;
+
+//       if(navigator.geolocation) {
+//         navigator.geolocation.getCurrentPosition(
+//           position => {
+//             this.getAddressFrom(position.coords.latitude, position.coords.longitude)
+
+//         },
+//         error => {
+//           this.error = "Locator is unable to find the address. Please type your address manually";
+//           this.spinner = false;
+//           // console.log( error.message);
+//         }
+//         );
+//       } else {
+//         this.error = error.message;
+//         this.spinner = false;
+//         console.log("Your browser does not support geolocation API ");
+//       }
+//     },
+
+//     getAddressFrom(lat, long) {
+//       axios.get("https://maps.googleapis.com/maps/api/geocode/json?latlng="
+//        + lat + 
+//        ","
+//         + long  
+//         + "&key=AIzaSyCXenSAdvj3jGWFGvml0kABzIiop3P30ck")
+//         .then(response => {
+//           if(response.data.error_message) {
+//             console.log(response.data.error_message);
+//           } else {
+//             this.address = response.data.results[0].formatted_address
+//               // console.log(response.data.results[0].formatted_address);
+//           }
+//       })
+//       .catch(err => {
+//         console.log(error.message);
+//       })
+//     }
   }
-}
+// }
 // import leaflet from 'leaflet';
 // import { onMounted, ref } from 'vue';
 // import GeoErrorModal from '@/components/GeoErrorModal.vue';
@@ -171,14 +226,14 @@ export default {
 }
 
 /* Center the form in the middle column */
-.two.column.centered.grid {
+/* .ui.two.column.centered.grid {
     display: flex;
     justify-content: center;
     align-items: center;
     height: 25vh;
 }
 
-.segment.large.form {
+.ui.segment.large.form {
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -186,10 +241,11 @@ export default {
 }
 
 /* Style for buttons */
-.button {
+ .button,
+ .circle.icon {
     background-color: red;
     color: white;
-}
+} 
 
 .background {
     background-image: url("../assets/home_background.jpg");
