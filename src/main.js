@@ -10,6 +10,7 @@ import { createApp } from 'vue'
 import App from './App.vue'
 import router from './router'
 import VueGoogleMaps from '@fawmi/vue-google-maps'
+import equal from 'fast-deep-equal'
 
 // Import FDE
 import equal from 'fast-deep-equal';
