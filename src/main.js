@@ -13,7 +13,7 @@ import VueGoogleMaps from '@fawmi/vue-google-maps'
 import equal from 'fast-deep-equal'
 
 // Import FDE
-import equal from 'fast-deep-equal';
+// import equal from 'fast-deep-equal';
 
 const VITE_GOOGLE_MAP_API_KEY = import.meta.env.VITE_GOOGLE_MAP_API_KEY;
 
