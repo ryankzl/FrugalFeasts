@@ -10,10 +10,13 @@ import { createApp } from 'vue'
 import App from './App.vue'
 import router from './router'
 import VueGoogleMaps from '@fawmi/vue-google-maps'
+// <<<<<<< HEAD
 import equal from 'fast-deep-equal'
 
 // Import FDE
 // import equal from 'fast-deep-equal';
+// =======
+// >>>>>>> 33568aadc618a7c30a428974aa08472dd763ab9a
 
 const VITE_GOOGLE_MAP_API_KEY = import.meta.env.VITE_GOOGLE_MAP_API_KEY;
 

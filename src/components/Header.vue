@@ -1,9 +1,26 @@
 <script>
-export default{
-    name: 'Header',
-};
+    import { onAuthStateChanged } from "firebase/auth";
+    import { auth } from "../firebase";
+    import {RouterLink} from 'vue-router';
 
-import {RouterLink} from 'vue-router';
+    export default{
+        name: 'Header',
+        data() {
+            return {
+                isUserLoggedIn: false,
+            };
+        },
+        
+        created() {
+            // Observer for changes in authentication state
+            onAuthStateChanged(auth, (user) => {
+                this.isUserLoggedIn = !!user; // !!user will be true if user is not null
+            });
+        }
+    };
+
+    
+
 </script>
 
 <template>
@@ -28,18 +45,21 @@ import {RouterLink} from 'vue-router';
                         <!-- Items In Menu -->
                         <div class="offcanvas-body">
                             <ul class="navbar-nav justify-content-end flex-grow-1 pe-3">
+
+                                <!-- We need to do form validation to allow access into games! -->
                                 <li class="nav-item">
-                                    <router-link to="/Game" class="nav-link"> Games! </router-link>
+                                    <router-link v-if="isUserLoggedIn" to="/Game" class="nav-link">Games!</router-link>
+
+                                    <!-- <router-link to="/Game" class="nav-link"> Games! </router-link> -->
                                 </li>
 
                                 <li class="nav-item">
                                     <router-link to="/About-Us" class="nav-link"> About-Us </router-link>
                                 </li>
 
-                                <li class="nav-item">
+                                <!-- <li class="nav-item">
                                     <router-link to="/Profile" class="nav-link"> Profile </router-link>
-                                </li>
-
+                                </li> -->
                             </ul>
                         </div>
                                 
@@ -48,14 +68,15 @@ import {RouterLink} from 'vue-router';
 
                 <!-- Branding/Logo Start -->
                 <router-link to="/" class="branding">
-                    <img src="../assets/header_bread.png">
-                    <h1>Frugal Feasts</h1>
-                    <img src="../assets/header_bread.png">
+                    <img src="../assets/header_logo.png">
+                    <!-- <h1>Frugal Feasts</h1>
+                    <img src="../assets/header_bread.png"> -->
                 </router-link>
                 <!-- Branding/Logo End -->
 
                 <!-- Profile Button -->
-                <router-link to="/Login" class="nes-btn">Log In!</router-link>            
+                <router-link v-if="isUserLoggedIn" to="/Profile" class="nes-btn">Profile</router-link>
+                <router-link v-else to="/Auth" class="nes-btn">Login!</router-link>
                 <!-- Profile End -->
             </div>
         </nav> 
