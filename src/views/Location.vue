@@ -1,267 +1,184 @@
 <template>
-
-    <div class="container-fluid location background">
-
-        <h1>Location Page</h1>
-
-        <section class="ui two column centered grid">
-        <div class="column">
-            <form class=" ui segment large form">
-                <div class=" ui message red" v-show="error">{{ error }}</div>
-                <div class=" ui segment">
-                    <div class="field">
-                        <div class=" ui right icon input large" :class="{loading:spinner}">
-                            <input type="text" placeholder="Enter your Address" v-model="address" />
-                            <button type="button" @click="locatorButtonPressed">Click Me</button>
-                        </div>
-                    </div>
-                    <button class=" button">Go</button>
-                </div>
-            </form>
+  <section class="p-5 background">
+    <div class="mx-auto d-flex align-items-center justify-content-center text-center" style="flex-direction: column;">
+      <div class="card w-40" style="max-width: 700px; background-color: grey; padding: 20px;">
+        <div class="card-header bg-dark project-name" id="header">
+          <h5 class="text-white fw-bold">Results</h5>
         </div>
-        </section>
-    </div>
-
-    <div class="map-container">
       <GMapMap
         :center="center"
-        :zoom="7"
+        :zoom="15"
         map-type-id="terrain"
-        style="width: 500px; height: 300px; margin-top: 200px;"
-    >
-      <GMapCluster>
-        <GMapMarker
-            :key="index"
-            v-for="(m, index) in markers"
-            :position="m.position"
-            :clickable="true"
-            :draggable="true"
-            @click="center=m.position"
+        style="width: 50vw; height: 300px"
+        ref="myMapRef"
+        :clickable="false"
+      >
+        <GMapMarker 
+          v-if="userMarkerLocation"
+          :position="userMarkerLocation.position"
+          :clickable="userMarkerLocation.clickable"
+          :icon="userMarkerLocation.icon"
         />
-      </GMapCluster>
+        <GMapMarker
+          :key="index"
+          v-for="(bakery, index) in bakeries"
+          :position="bakery.geometry.location"
+          :clickable="true"
+          @click="showBakeryDetails(bakery)"
+          @rightclick="getDirections()"
+          :id="bakery.place_id"
+        />
+        <GMapInfoWindow :closeclick="true" @closeclick="openMarker(null)" :opened="infowindowMarkerId !== null"
+          style="width: 300px; height: 100px"
+          :position="infoCoordinates"
+        >
+          <div>
+            <h4 style="font-family: Arial, Helvetica, sans-serif;">{{ selectedPlaceName }}</h4>
+            <p>{{ selectedPlaceAddress }}</p>
+            <p><a :href="link">View on Google Maps</a></p>
+          </div>
+        </GMapInfoWindow>
       </GMapMap>
     </div>
- 
+  </div>
+  </section>
+  <section></section>
 </template>
 
-
 <script>
-
-// import axios from 'axios'
-
 export default {
-  name: 'App',
+  name: 'Location',
   data() {
     return {
-      center: {lat: 51.093048, lng: 6.842120},
-      markers: [
-        {
-          position: {
-            lat: 51.093048, lng: 6.842120
-          },
-        }
-        , // Along list of clusters
-      ]
-    }
+      center: { lat: 1.3521, lng: 103.8198 },
+      locationSearch: this.$route.params.postalCode,
+      bakeries: [],
+      infoCoordinates: null,
+      selectedPlaceName: "",
+      selectedPlaceAddress: "",
+      link: "",
+      service: null,
+      infowindowMarkerId: null,
+      userMarkerLocation: null,
+      directionsRenderer: null,
+    };
   },
-  // data() {
-  //   return {
-  //     address: "",
-  //     error:"",
-  //     spinner: false,
-  //   }
-  // },
+  methods: {
+    async initMap() {
+      const map = await this.$refs.myMapRef.$mapPromise;
+      this.service = new google.maps.places.PlacesService(map);
+    },
+    async fetchNearbyBakeries() {
+      const address = this.locationSearch;
+      const geocoder = new google.maps.Geocoder();
 
-//   methods: {
-//     locatorButtonPressed() {
+      const results = await new Promise((resolve, reject) => {
+        geocoder.geocode({ address: address }, (results, status) => {
+          if (status === google.maps.GeocoderStatus.OK) {
+            resolve(results);
+            console.log(results);
+          } else {
+            reject('Geocode was not successful for the following reason: ' + status);
+          }
+        });
+      });
 
-//       this.spinner = true;
+      const userLocation = results[0].geometry.location;
+      this.userMarkerLocation = {
+        position: userLocation,
+        clickable: true,
+        icon: "https://maps.google.com/mapfiles/ms/icons/blue-dot.png"
+      };
+      console.log('Latitude:', userLocation.lat());
+      console.log('Longitude:', userLocation.lng());
+      const map = await this.$refs.myMapRef.$mapPromise;
+      map.setCenter(userLocation);
+      this.service = new google.maps.places.PlacesService(map);
 
-//       if(navigator.geolocation) {
-//         navigator.geolocation.getCurrentPosition(
-//           position => {
-//             this.getAddressFrom(position.coords.latitude, position.coords.longitude)
+      const nearbyResults = await new Promise((resolve) => {
+        this.service.nearbySearch({
+          location: userLocation,
+          radius: 2000,
+          type: 'bakery',
+        }, (results, status) => {
+          if (status === google.maps.places.PlacesServiceStatus.OK) {
+            resolve(results);
+          }
+        });
+      });
 
-//         },
-//         error => {
-//           this.error = "Locator is unable to find the address. Please type your address manually";
-//           this.spinner = false;
-//           // console.log( error.message);
-//         }
-//         );
-//       } else {
-//         this.error = error.message;
-//         this.spinner = false;
-//         console.log("Your browser does not support geolocation API ");
-//       }
-//     },
+      // Create markers for nearby bakeries
+      console.log(nearbyResults);
+      this.bakeries = nearbyResults;
+    },
+    showBakeryDetails(bakery) {
+      this.infowindowMarkerId = bakery.place_id;
+      const request = {
+        placeId: bakery.place_id,
+        fields: ['name', 'place_id', 'formatted_address', 'geometry'],
+      };
 
-//     getAddressFrom(lat, long) {
-//       axios.get("https://maps.googleapis.com/maps/api/geocode/json?latlng="
-//        + lat + 
-//        ","
-//         + long  
-//         + "&key=AIzaSyCXenSAdvj3jGWFGvml0kABzIiop3P30ck")
-//         .then(response => {
-//           if(response.data.error_message) {
-//             console.log(response.data.error_message);
-//           } else {
-//             this.address = response.data.results[0].formatted_address
-//               // console.log(response.data.results[0].formatted_address);
-//           }
-//       })
-//       .catch(err => {
-//         console.log(error.message);
-//       })
-//     }
-  }
-// }
-// import leaflet from 'leaflet';
-// import { onMounted, ref } from 'vue';
-// import GeoErrorModal from '@/components/GeoErrorModal.vue';
-// import MapFeatures from '@/components/MapFeatures.vue';
-// export default {
-//     name: "Location",
-//     components: { GeoErrorModal, MapFeatures },
-//     setup() {
-//         let map;
-//         onMounted(() => {
-//             // init map
-//             map = leaflet.map('map').setView([51.505, -0.09], 13);
+      const place = new Promise((resolve) => {
+        this.service.getDetails(request, (place, status) => {
+          if (status === google.maps.places.PlacesServiceStatus.OK) {
+            resolve(place);
+            this.selectedPlaceAddress = place.formatted_address;
+            this.selectedPlaceName = place.name;
+            const latitude = place.geometry.location.lat();
+            const longitude = place.geometry.location.lng();
+            this.infoCoordinates = { lat: latitude, lng: longitude };
+            console.log(this.infoCoordinates);
 
-//             // add tile layers
-//             leaflet
-//             .tileLayer(
-//                 `https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token=${process.env.VUE_APP_API_KEY}`,
-//                 {
-//                     attribution: 
-//                         '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>',
-//                     maxZoom: 18,
-//                     id: "mapbox/streets-v11",
-//                     tileSize: 512,
-//                     zoomOffset: -1,
-//                     accessToken: process.env.VUE_APP_API_KEY,
-//                 }
-//             )
-//             .addTo(map);
+            const googleMapsLink = `https://www.google.com/maps/search/?api=1&query=${place.name}&query_place_id=${place.place_id}`;
+            this.link = googleMapsLink;
+          }
+        });
+      });
+    },
+    openMarker(id) {
+      this.infowindowMarkerId = id;
+    },
+    getDirections() {
+      const directionsService = new google.maps.DirectionsService();
+      this.directionsRenderer = new google.maps.DirectionsRenderer();
 
-//             getGeolocation();
-//         })
-
-//         const coords = ref(null);
-//         const fetchCoords = ref(null);
-//         const geoMarker = ref(null);
-//         const geoError = ref(null);
-//         const geoErrorMsg = ref(null);
-
-//         const getGeolocation = () => {
-//             if (coords.value) {
-//                 coords.value = null;
-//                 sessionStorage.removeItem("coords");
-//                 map.removeLayer(geoMarker.value);
-//                 return;
-//             }
-//             //check session storage for coords
-//             if (sessionStorage.getItem('coords')) {
-//                 coords.value = JSON.parse(sessionStorage.getItem('coords'));
-//                 plotGeoLocation(coords.value);
-//                 return;
-//             }
-//             fetchCoords.value = true;
-//             navigator.geolocation.getCurrentPosition(setCoords, getLocError);
-//         };
-
-//         const setCoords = (pos) => {
-//             // stop fetching coords
-//             fetchCoords.value = null;
-
-//             //set coords in session storage
-//             const setSessionCoords = {
-//                 lat: pos.coords.latitude,
-//                 lng: pos.coords.longitude,
-//             };
-
-//             sessionStorage.setItem("coords", JSON.stringify(setSessionCoords));
-
-//             //set ref coords value
-//             coords.value = setSessionCoords;
-
-//             plotGeoLocation(coords.value);
-//         };
-
-//         const getLocError = (err) => {
-//             fetchCoords.value = null;
-//             geoError.value = true;
-//             geoErrorMsg.value = err.message;
-//         };
-
-//         const plotGeoLocation = (coords) => {
-//             // create custom marker
-//             const customMarker = leaflet.icon({
-//                 iconUrl : require('../assets/map-marker-red.svg'),
-//                 iconSize: [35, 35],
-//             });
-
-//             // create new marker with coords and custom icon
-//             geoMarker.value = leaflet.marker([coords.lat, coords.lng], { icon: customMarker }).addTo(map);
-
-//             //setting map view to current location
-//             map.setView([coords.lat, coords.lng], 10);
-//         };
-
-//         const closeGeoError = () => {
-//             geoError.value = null;
-//             geoErrorMsg.value = null;
-//         };
-
-//         return { coords, fetchCoords, geoMarker, closeGeoError, geoError, geoErrorMsg, getGeolocation, };
-//     },
-// };
+      directionsService.route(
+        {
+          origin: this.userMarkerLocation.position,
+          destination: this.infoCoordinates,
+          travelMode: 'DRIVING',
+        },
+        (response, status) => {
+          if (status === "OK") {
+            this.directionsRenderer.setDirections(response);
+          }
+          else {
+            window.alert("Directions request failed due to " + status);
+          }
+        });
+    },
+  },
+  created() {
+    // Call the initMap function to initialize the map and services
+    this.initMap();
+    // Fetch nearby bakeries based on the postal code received as a prop
+    this.fetchNearbyBakeries();
+  },
+};
 </script>
 
-<style scoped>
-.location {
-    text-align: center;
-    padding-top: 100px;
-}
 
-/* Center the form in the middle column */
-/* .ui.two.column.centered.grid {
+<style scoped>
+.background{
+    background-image: url("../assets/background.png");
+    background-repeat: no-repeat;
+    background-size: cover;  
+    height: calc(100vh - 100px);
+}
+.body{
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 25vh;
+    height: calc(100vh - 100px);			
 }
-
-.ui.segment.large.form {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    width: 100%;
-}
-
-/* Style for buttons */
- .button,
- .circle.icon {
-    background-color: red;
-    color: white;
-} 
-
-.background {
-    background-image: url("../assets/home_background.jpg");
-    background-repeat: no-repeat;
-    background-size: cover;
-    position: absolute;
-    top: 100px;
-    height: 100vh;
-}
-
-.map-container {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  margin-top: 200px;
-}
-
-
 </style>

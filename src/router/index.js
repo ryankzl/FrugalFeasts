@@ -1,5 +1,6 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import Home from '../views/Home.vue'
+import Location from '../views/Location.vue';
 
 const router = createRouter({
 
@@ -37,9 +38,10 @@ const router = createRouter({
     },
 
     {
-		path: '/Location',
-		name: 'Location',
-		component: () => import("../views/Location.vue")
+      path: '/Location/:postalCode',
+      name: 'Location',
+      component: () => import("../views/Location.vue"),
+      props: true,
     },
  
   ]
