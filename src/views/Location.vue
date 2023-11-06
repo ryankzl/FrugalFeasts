@@ -40,9 +40,39 @@
         </GMapInfoWindow>
       </GMapMap>
     </div>
+    <!-- Store Cards Container -->
+    <div class="store-cards-container mt-4" style="background-color: grey; display: flex; flex-wrap: wrap; justify-content: space-between;">
+        <!-- Store Card 1 -->
+        <div class="store-card" style="background-color: white; border: 2px solid black; padding: 10px; margin: 10px; width: calc(33.33% - 20px);">
+          <img src="../assets/bakery2.jpg" alt="Store Image 1" class="store-image" style="width: 80%; height: auto; border: 2px solid black;" />
+          <h6 class="mt-3">Epi D'or</h6>
+          <p>Products: Product 1, Product 2, Product 3</p>
+
+          <p class="distance">Distance: 82m</p>
+        </div>
+
+        <!-- Store Card 2 -->
+        <div class="store-card" style="background-color: white; border: 2px solid black; padding: 10px; margin: 10px; width: calc(33.33% - 20px);">
+          <img src="../assets/bakery.jpg" alt="Store Image 2" class="store-image" style="width: 80%; height: auto; border: 2px solid black;" />
+          <h6 class="mt-3">Tiong Bahru Bakery</h6>
+          <p>Products: Product 1, Product 2, Product 3</p>
+
+          <p class="distance">Distance: 99m</p>
+        </div>
+
+
+        <!-- Store Card 3 -->
+        <div class="store-card" style="background-color: white; border: 2px solid black; padding: 10px; margin: 10px; width: calc(33.33% - 20px);">
+          <img src="../assets/bakery3.jpg" alt="Store Image 3" class="store-image" style="width: 80%; height: auto; border: 2px solid black;" />
+          <h6 class="mt-3">Duke Bakery</h6>
+          <p>Products: Product 1, Product 2, Product 3</p>
+
+          <p class="distance">Distance: 900m</p>
+        </div>
+      </div>
   </div>
   </section>
-  <section></section>
+  
 </template>
 
 <script>
@@ -173,11 +203,11 @@ export default {
     background-image: url("../assets/background.png");
     background-repeat: no-repeat;
     background-size: cover;  
-    height: calc(100vh - 100px);
+    height: 100%;
 }
 .body{
     display: flex;
-    justify-content: center;
+    justify-content: right;
     align-items: center;
     height: calc(100vh - 100px);			
 }
