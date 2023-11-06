@@ -4,33 +4,22 @@
 
 			<div class="container-fluid flex game">
 				<!-- First Row -->
-
-				<div class="details1">
-					Keys Required: 5
-				</div>
-
 				<div class="keys">
-					<img src="../assets/game_key.png" id = "keys">:{{ keys }}
+					<img src="../assets/game_key.png" id = "key">:{{ keys }}
 				</div>
-
-				<div class="chest">
-					<img src="../assets/game_chest.png" id="chest">
-				</div>
+				<img src="../assets/game_chest.png" id="chest">
 
 				<div class="details">
 					Boxes Opened:{{ totalBoxes }}
 					Vouchers Won:{{ win }}
 				</div>
-				
 				<!-- Second Row -->
-				<!-- <div class="play">
+				<div class="play">
+					<!-- Would like to put a turn key here -->
 					<img src="../assets/game_key.png" id = "unlock">
 					<input type="range" id="slider" min="0" max="180" value="0" @input="rotateKey">
 					Turn Key To Unlock 
-				</div> -->
 
-				<div class="play">
-					<button class="nes-btn">Unlock Me!</button>
 				</div>
 					
 				
@@ -129,38 +118,52 @@
     text-align: center;
     border-radius: 20px; 
 	box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.2);
-
 	display: grid;
-	grid-template-rows: auto 2fr 1fr;
-	grid-template-columns: 1fr 2fr 1fr;
+    grid-template-columns: 1fr 3fr 1fr; /* Three columns */
+    grid-template-rows: 2fr 1fr ;
 }
 
 #chest{
-	width: auto;
-	height: auto;
-}
-
-.chest{
-	grid-row: 2;
-	grid-column: 2;
-}
-
-.details{
+	grid-column: 2 / 3; /* This places the chest in the second column */
+    justify-self: center; 
 	grid-row: 1;
-	grid-column: 3;
+
+	/* Size of Image */
+	width: 400px;
+	height: auto;
+	
+}
+.details{
+	grid-column: 3 / 4; /* This places the details in the third column */
+    justify-self: start;
+	grid-row: 1;
+}
+
+
+.play{
+	grid-column: 2/3;
+	grid-row: 2;
+	justify-self: center;
+	display: grid;
+	justify-content: center;
+	padding: 0;
+	align-self: start;
+
+}
+#unlock{
+	justify-content: center;
 }
 
 .keys{
+	grid-column: 1 / 3 ;
+	justify-self: start;
 	grid-row: 1;
-	grid-column: 2;
 }
-.keys-required{
-	grid-row: 1;
-	grid-column: 1;
+#key{
+	width: 100px;
+	height: auto;
 }
 
-.play{
-	grid-row:3;
-	grid-column: 2;
-}
+
+
 </style>
