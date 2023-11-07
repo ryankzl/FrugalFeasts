@@ -88,14 +88,14 @@ export default {
 
     methods: {
         async fetchData() {
-            const docRef = doc(db, "business", "breadtalk");
+            const docRef = doc(db, "business", "ChIJfwEEIqYZ2jER7KGqeEBPVLw");
             const docSnap = await getDoc(docRef);
 
             if (docSnap.exists()) {
                 const data = docSnap.data();
                 this.storeData.name = data.name;
                 this.storeData.address = data.address;
-                this.storeData.closeTime = data.close_time;
+                this.storeData.closeTime = data.closing_time;
                 this.storeData.breads = Object.entries(data.food).map(([key, value]) => ({
                 id: key,
                 price: value[0], // Here the first element is price
@@ -129,7 +129,7 @@ export default {
         async stockUpdate() {
             try {
                 await runTransaction(db, async (transaction) => {
-                    const docRef = doc(db, "business", "breadtalk");
+                    const docRef = doc(db, "business", "ChIJfwEEIqYZ2jER7KGqeEBPVLw");
                     const snapshot = await transaction.get(docRef);
 
                     if (!snapshot.exists) {

@@ -51,183 +51,217 @@
 <script>
 
 import StoreCards from "../components/StoreCards.vue"
+import { db } from "../firebase";
+import { getDoc, doc, runTransaction, updateDoc, increment, collection, getDocs} from "../../node_modules/firebase/firestore";
 
 export default {
-  name: 'Location',
-  components:{
-	StoreCards,
-  },
-  data() {
-    return {
-      center: { lat: 1.3521, lng: 103.8198 },
-      locationSearch: this.$route.params.postalCode,
-      bakeries: [],
-      infoCoordinates: null,
-      selectedPlaceName: "",
-      selectedPlaceAddress: "",
-      link: "",
-      service: null,
-      infowindowMarkerId: null,
-      userMarkerLocation: null,
-      directionsRenderer: null,
-      targetPlaceIds: [
-        'ChIJOWmPzaUZ2jERtgmyBock1Y4', 
-        'ChIJfwEEIqYZ2jER7KGqeEBPVLw', 
-        'ChIJMUALI68Z2jER6yrUp2Z11Xk'
-      ], // Add your target place IDs here
+	name: 'Location',
 
-    };
-  },
-  methods: {
-    async loadGoogleMaps(apiKey) {
-  return new Promise((resolve, reject) => {
-    // Check if the google object is already defined
-    if (typeof google !== 'undefined') {
-      resolve();
-    } else if (document.querySelector('script[src^="https://maps.googleapis.com/maps/api/js"]')) {
-      // Check if the API script is already in the DOM
-      // If it is, wait for it to load
-      const checkForScript = () => {
-        if (typeof window.google !== 'undefined') {
-          resolve();
-        } else {
-          setTimeout(checkForScript, 100);
-        }
-      };
-      checkForScript();
-    } else {
-      // Create a script element for the Google Maps API
-      const script = document.createElement('script');
-      script.src = `https://maps.googleapis.com/maps/api/js?key=${apiKey}&libraries=places`;
-      script.async = true;
-      script.defer = true;
+	components:{
+		StoreCards,
+	},
 
-      // Set up a callback function to resolve the promise when the script is loaded
-      script.onload = resolve;
-      script.onerror = reject;
+  	data() {
+    	return {
+			placeIds: [],
+			center: { lat: 1.3521, lng: 103.8198 },
+			locationSearch: this.$route.params.postalCode,
+			bakeries: [],
+			infoCoordinates: null,
+			selectedPlaceName: "",
+			selectedPlaceAddress: "",
+			link: "",
+			service: null,
+			infowindowMarkerId: null,
+			userMarkerLocation: null,
+			directionsRenderer: null,
+			targetPlaceIds: [
+				'ChIJOWmPzaUZ2jERtgmyBock1Y4', 
+				'ChIJfwEEIqYZ2jER7KGqeEBPVLw', 
+				'ChIJMUALI68Z2jER6yrUp2Z11Xk'
+			], // Add your target place IDs here
 
-      // Add the script to the document's head
-      document.head.appendChild(script);
-    }
-  });
-},
+			
 
-    async initMap() {
-      const map = await this.$refs.myMapRef.$mapPromise;
-      this.service = new google.maps.places.PlacesService(map);
-    },
-    async fetchNearbyBakeries() {
-      const address = this.locationSearch;
-      const geocoder = new google.maps.Geocoder();
+    	};
+	},
 
-      const results = await new Promise((resolve, reject) => {
-        geocoder.geocode({ address: address }, (results, status) => {
-          if (status === google.maps.GeocoderStatus.OK) {
-            resolve(results);
-            console.log(results);
-          } else {
-            reject('Geocode was not successful for the following reason: ' + status);
-          }
-        });
-      });
+  	methods: {
+		async loadGoogleMaps(apiKey) {
+			return new Promise((resolve, reject) => {
+				// Check if the google object is already defined
+				if (typeof google !== 'undefined') {
+				resolve();
+				} 
+				else if (document.querySelector('script[src^="https://maps.googleapis.com/maps/api/js"]')) {
+				// Check if the API script is already in the DOM
+				// If it is, wait for it to load
+					const checkForScript = () => {
+						if (typeof window.google !== 'undefined') {
+						resolve();
+						} else {
+						setTimeout(checkForScript, 100);
+						}
+					};
+					checkForScript();
+				} 
+				else {
+				// Create a script element for the Google Maps API
+					const script = document.createElement('script');
+					script.src = `https://maps.googleapis.com/maps/api/js?key=${apiKey}&libraries=places`;
+					script.async = true;
+					script.defer = true;
 
-      const userLocation = results[0].geometry.location;
-      this.userMarkerLocation = {
-        position: userLocation,
-        clickable: true,
-        icon: "https://maps.google.com/mapfiles/ms/icons/blue-dot.png"
-      };
-      console.log('Latitude:', userLocation.lat());
-      console.log('Longitude:', userLocation.lng());
-      const map = await this.$refs.myMapRef.$mapPromise;
-      map.setCenter(userLocation);
-      this.service = new google.maps.places.PlacesService(map);
+					// Set up a callback function to resolve the promise when the script is loaded
+					script.onload = resolve;
+					script.onerror = reject;
 
-      const nearbyResults = await new Promise((resolve) => {
-        this.service.nearbySearch({
-          location: userLocation,
-          radius: 1000,
-          type: 'bakery',
-        }, (results, status) => {
-          if (status === google.maps.places.PlacesServiceStatus.OK) {
-            resolve(results);
-          }
-        });
-      });
+					// Add the script to the document's head
+					document.head.appendChild(script);
+				}
+			});
+		},
 
-      // Create markers for nearby bakeries
-      console.log(nearbyResults);
-      this.bakeries = nearbyResults;
-       // Filter out and create a marker only for the desired bakery
-      // this.bakeries = nearbyResults.filter(bakery => bakery.place_id === 'ChIJOWmPzaUZ2jERtgmyBock1Y4');
-      this.bakeries = nearbyResults.filter(bakery => this.targetPlaceIds.includes(bakery.place_id));
+		async initMap() {
+			const map = await this.$refs.myMapRef.$mapPromise;
+			this.service = new google.maps.places.PlacesService(map);
+		},
 
-    },
-    showBakeryDetails(bakery) {
-      this.infowindowMarkerId = bakery.place_id;
-      const request = {
-        placeId: bakery.place_id,
-        fields: ['name', 'place_id', 'formatted_address', 'geometry'],
-      };
+		async fetchNearbyBakeries() {
+			const address = this.locationSearch;
+			const geocoder = new google.maps.Geocoder();
 
-      const place = new Promise((resolve) => {
-        this.service.getDetails(request, (place, status) => {
-          if (status === google.maps.places.PlacesServiceStatus.OK) {
-            resolve(place);
-            this.selectedPlaceAddress = place.formatted_address;
-            this.selectedPlaceName = place.name;
-            const latitude = place.geometry.location.lat();
-            const longitude = place.geometry.location.lng();
-            this.infoCoordinates = { lat: latitude, lng: longitude };
-            console.log(this.infoCoordinates);
+			const results = await new Promise((resolve, reject) => {
+				geocoder.geocode({ address: address }, (results, status) => {
+					if (status === google.maps.GeocoderStatus.OK) {
+						resolve(results);
+						console.log(results);
+					} 
+					else {
+						reject('Geocode was not successful for the following reason: ' + status);
+					}
+				});
+			});
 
-            const googleMapsLink = `https://www.google.com/maps/search/?api=1&query=${place.name}&query_place_id=${place.place_id}`;
-            this.link = googleMapsLink;
-          }
-        });
-      });
-    },
-    openMarker(id) {
-      this.infowindowMarkerId = id;
-    },
-    getDirections() {
-      const directionsService = new google.maps.DirectionsService();
-      this.directionsRenderer = new google.maps.DirectionsRenderer();
+			const userLocation = results[0].geometry.location;
+			this.userMarkerLocation = {
+				position: userLocation,
+				clickable: true,
+				icon: "https://maps.google.com/mapfiles/ms/icons/blue-dot.png"
+			};
 
-      directionsService.route(
-        {
-          origin: this.userMarkerLocation.position,
-          destination: this.infoCoordinates,
-          travelMode: 'DRIVING',
-        },
-        (response, status) => {
-          if (status === "OK") {
-            this.directionsRenderer.setDirections(response);
-          }
-          else {
-            window.alert("Directions request failed due to " + status);
-          }
-        });
-    },
-  },
-  created() {
-  // Call the loadGoogleMaps method to load the Google Maps API
-  this.loadGoogleMaps(import.meta.env.VITE_GOOGLE_MAP_API_KEY)
-    .then(() => {
-      // The Google Maps API is now loaded and ready to use
-      this.initMap();
-      this.fetchNearbyBakeries();
-    })
-    .catch((error) => {
-      console.error('Failed to load Google Maps API:', error);
-    });
-}
+			console.log('Latitude:', userLocation.lat());
+			console.log('Longitude:', userLocation.lng());
+			const map = await this.$refs.myMapRef.$mapPromise;
+			map.setCenter(userLocation);
+			this.service = new google.maps.places.PlacesService(map);
+
+			const nearbyResults = await new Promise((resolve) => {
+				this.service.nearbySearch({
+				location: userLocation,
+				radius: 1000,
+				type: 'bakery',
+				}, (results, status) => {
+				if (status === google.maps.places.PlacesServiceStatus.OK) {
+					resolve(results);
+				}
+				});
+			});
+
+			// Create markers for nearby bakeries
+			console.log(nearbyResults);
+			this.bakeries = nearbyResults;
+			// Filter out and create a marker only for the desired bakery
+			// this.bakeries = nearbyResults.filter(bakery => bakery.place_id === 'ChIJOWmPzaUZ2jERtgmyBock1Y4');
+
+			this.bakeries = nearbyResults.filter(bakery => this.placeIds.includes(bakery.place_id));
+
+		},
+
+		showBakeryDetails(bakery) {
+			this.infowindowMarkerId = bakery.place_id;
+			const request = {
+				placeId: bakery.place_id,
+				fields: ['name', 'place_id', 'formatted_address', 'geometry'],
+			};
+
+			const place = new Promise((resolve) => {
+				this.service.getDetails(request, (place, status) => {
+					if (status === google.maps.places.PlacesServiceStatus.OK) {
+						resolve(place);
+						this.selectedPlaceAddress = place.formatted_address;
+						this.selectedPlaceName = place.name;
+						const latitude = place.geometry.location.lat();
+						const longitude = place.geometry.location.lng();
+						this.infoCoordinates = { lat: latitude, lng: longitude };
+						console.log(this.infoCoordinates);
+
+						const googleMapsLink = `https://www.google.com/maps/search/?api=1&query=${place.name}&query_place_id=${place.place_id}`;
+						this.link = googleMapsLink;
+					}
+				});
+			});
+		},
+		openMarker(id) {
+			this.infowindowMarkerId = id;
+		},
+		getDirections() {
+			const directionsService = new google.maps.DirectionsService();
+			this.directionsRenderer = new google.maps.DirectionsRenderer();
+
+		directionsService.route({	
+				origin: this.userMarkerLocation.position,
+				destination: this.infoCoordinates,
+				travelMode: 'DRIVING',
+			},
+			(response, status) => {
+				if (status === "OK") {
+					this.directionsRenderer.setDirections(response);
+				}
+				else {
+					window.alert("Directions request failed due to " + status);
+				}
+			});
+		},
+
+    	// Fetch Document ID
+		async fetchPlaceIds() {
+			const collectionRef = collection(db, 'business'); 
+			const snapshot = await getDocs(collectionRef);
+
+			const documentIds = snapshot.docs.map(doc => doc.id);
+			console.log(documentIds); // Output the array of document IDs to the console
+			console.log(this.targetPlaceIds);
+
+			// If you need to do something with the document IDs, you can do that here
+			// For example, storing them in the component's data:
+			this.placeIds = documentIds;
+		},
+	
+  
   // created() {
   //   // Call the initMap function to initialize the map and services
   //   this.initMap();
   //   // Fetch nearby bakeries based on the postal code received as a prop
   //   this.fetchNearbyBakeries();
   // },
+  	},
+
+  	async created() {
+
+		await this.fetchPlaceIds();
+	
+  		// Call the loadGoogleMaps method to load the Google Maps API
+		this.loadGoogleMaps(import.meta.env.VITE_GOOGLE_MAP_API_KEY)
+			.then(() => {
+				// The Google Maps API is now loaded and ready to use
+				this.initMap();
+				this.fetchNearbyBakeries();
+			})
+			.catch((error) => {
+				console.error('Failed to load Google Maps API:', error);
+			});
+	}
 };
 </script>
 
