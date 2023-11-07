@@ -81,8 +81,7 @@ export default {
                 .then( async (userCredential) => {
                     const user = userCredential.user;       
                     this.$refs.popup.checker("signup", "success");
-                    await this.initializeUserData(this.email);         
-                    
+                    await this.initializeUserData(this.email);                       
 
                 })
                 .catch((error) => {
@@ -100,15 +99,23 @@ export default {
         
         async initializeUserData(email) {
             const userCollectionRef = collection(db, email);
-            const userDocRef = doc(userCollectionRef, "gameInfo");
-
+            const userDocRefGame = doc(userCollectionRef, "gameInfo");
+            const userDocRefVoucher = doc(userCollectionRef, "vouchers");
             try {
-                await setDoc(userDocRef, {
+                await setDoc(userDocRefGame, {
                     win: 0,
                     loss: 0,
                     keys: 0
                 });
-            } catch (error) {
+                await setDoc(userDocRefVoucher, {
+                    // We can actually just compute totalVouchers but in case of a separate database structure (i have in mind)
+                    totalVouchers: 0, // Is the same as win in Doc Game
+                    voucher1: 0,
+                    voucher2: 0,
+                    voucher3: 0,
+                });
+            } 
+            catch (error) {
                 console.error("Error initializing user data:", error);
                 throw error; // Rethrow to handle it in the caller function
             }
