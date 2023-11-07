@@ -31,6 +31,7 @@
 			
 
 				<div class="play">
+					<!-- If sufficient Keys -->
 					<section>
 						<button type="button" class="nes-btn is-primary" @click="shakeElement() ; unlockChest()" v-if="enoughKeys">
 							Unlock Me!
@@ -57,7 +58,7 @@
 							</form>
 						</dialog>
 					</section>
-					<!-- <button class="nes-btn" @click="shakeElement() ; unlockChest()" v-if="enoughKeys">Unlock Me!</button> -->
+					<!-- Insufficient Keys -->
 					<button class="nes-btn is-error is-disabled" v-if="!enoughKeys">Not Enough Keys!</button>
 				</div>
 					

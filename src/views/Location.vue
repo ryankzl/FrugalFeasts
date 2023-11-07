@@ -41,7 +41,6 @@
       </GMapMap>
     </div>
     
-
 	<StoreCards></StoreCards>
 
   </div>
