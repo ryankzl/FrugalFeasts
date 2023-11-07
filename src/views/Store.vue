@@ -3,43 +3,46 @@
     <div class="background">
         <div class="container-fluid body ">
             <div class="store">
+                    <!-- Store Details -->
+                    <div class="card nes-container is-rounded left">
+                            <img src="../assets/food_croissant.png" id="bakeryImage">
+                            <h3>{{ storeData.name }}</h3>   
+                            <small><p>{{ storeData.address }}</p></small>
+                            <p>Closes At: {{ storeData.closeTime }}</p>
+                            <!-- Would like to link this to external google maps later -->
+                            <button class="nes-btn" id="directions">📍Directions</button>
+                    </div>
+                    <!-- Bread Details -->
+                    <div class="card nes-container is-rounded right" id="food_card">
+                        <div class="row row-cols-1 row-cols-md-2 g-4">
+                        
+                            <!-- Use v-for to iterate over each item in storeData.breads -->
+                            <div class="col" v-for="(bread, index) in storeData.breads" :key="index">
+                                <div class="card">
+                                
+                                <!-- Use the dynamic src binding for images -->
+                                <img :src="`/src/assets/food_${bread.id}.png`" class="card-img-top">
+                                <div class="card-body">
+                                
+                                    <!-- Dynamically populate title and text from your storeData.breads -->
+                                    <h5 class="card-title">{{ bread.name }}</h5>
+                                    <p class="card-text">
+                                            <p>Quantity:{{ bread.quantity }}</p>
+                                            <p>Price: ${{ bread.price }}</p>                                       
+                                    <!-- This bread costs ${{ bread.price }} and we have {{ bread.quantity }} left. -->
+                                    </p>
+                                    
+                                    <!-- Add quantity adjustment buttons -->
+                                    <button @click="addQuantity(bread.id)">+</button>
+                                    <button @click="minusQuantity(bread.id)">-</button>
+                                </div>
+                                </div>
+                            </div>
+                        
+                        </div>
+                    </div>
 
-                <div class="left">
-                    
-                    <img src="../assets/food_croissant.png" id="bakeryImage">
-                   
-                    <h1>Name</h1>   
-
-                    <p>Address</p>
-
-                    <p>Closes At:</p>
-
-                    <button class="nes-btn" id="directions">📍Directions</button>
-                </div>
-
-                <div class="right">
-                    this is right side
-                </div>
-
-                <!-- <div class="row">
-                    <img src="../assets/bakery2.jpg">
-
-
-                    <div class="details">
-                    <h1>
-                        Bakery Name
-                    </h1>  
-
-                    <p>
-                        Address Goes Here
-                    </p>
-
-                    <p>
-                        Opening Hours
-                    </p>
-                    </div>               
-
-                </div> -->
+      
 
             </div>
         </div>
@@ -50,80 +53,47 @@
 
 
 <script>
+    import { onMounted, reactive } from "vue";
+    import { db } from "../firebase";
+    import { getDoc, doc, updateDoc, increment} from "../../node_modules/firebase/firestore";
 
 export default{
     name: "Store",
-    data(){
-        return{
-            bakeryInfo:{
-                bakeryName: 'Tiong Bahru Bakery',
-                address: '252 North Bridge Road, #B1-11, Raffles City Shopping Centre, Singapore 179103',
-                openingHours: '7.30am to 10pm',
-                distance: '', //distance from the user 
-                googleMapsLink: '', // Link to google maps
-                bakeryImage: "/src/assets/bakery.jpg",
-            }, 
-            //list of bread objects 
-            breads:[
-                {
-                    id: "sausage_bun",
-                    name: "Sausage Bun",
-                    image: "/src/assets/sausage bun.png",
-                    originalPrice: "$2.30",
-                    salePrice: "$1.00",
-                    quantity: 0,
-                    maxQuantity: 12,
-                },
-                {
-                    id: "kaya_bread",
-                    name: "Kaya Bread",
-                    image: "/src/assets/kaya bread.png",
-                    originalPrice: "$2.50",
-                    salePrice: "$1.20",
-                    quantity: 0,
-                    maxQuantity: 10,
-                },
-                {
-                    id: "pineapple_bun",
-                    name: "Pineapple Bun",
-                    image: "/src/assets/pineapple bun.jpg",
-                    originalPrice: "$2.00",
-                    salePrice: "$0.90", 
-                    quantity: 0,
-                    maxQuantity: 8,
-                }, 
-                {
-                    id: "pork_floss_bun",
-                    name: "Pork Floss Bun",
-                    image: "/src/assets/pork floss bun.jpg",
-                    originalPrice: "$2.20",
-                    salePrice:"1.30",
-                    quantity: 0,
-                    maxQuantity: 6,
-                }, 
-                {
-                    id: "cinnamon_bun",
-                    name: "Cinnamon Bun",
-                    image: "/src/assets/cinnamon bun.jpg",
-                    originalPrice: "$1.80",
-                    salePrice:"0.80",
-                    quantity: 0,
-                    maxQuantity: 7,
-                },
-                {
-                    id: "red_bean_bun",
-                    name: "Red Bean Bun",
-                    image: "/src/assets/red bean bun.jpg",
-                    originalPrice: "$2.30",
-                    salePrice:"1.70",
-                    quantity: 0,
-                    maxQuantity: 9,
-                }
 
+    setup() {
+        const storeData = reactive({
+            name: '',
+            address: '',
+            closeTime: '',
+            breads: []
+        });
 
-            ]
-        }
-    }, 
+        const fetchData = async () => {
+            const docRef = doc(db, "business", "breadtalk");
+            const docSnap = await getDoc(docRef);
+
+            if (docSnap.exists()) {
+                const data = docSnap.data();
+                storeData.name = data.name;
+                storeData.address = data.address;
+                storeData.closeTime = data.close_time;
+                // Assuming 'food' is the map containing your breads
+                storeData.breads = Object.entries(data.food).map(([key, value]) => ({
+                    id: key,
+                    quantity: value[0],
+                    price: value[1],
+                    maxQuantity: 100 // You need to define the logic for maxQuantity
+                }));
+            } else {
+                console.log("No such document!");
+            }
+        };
+
+        onMounted(fetchData);
+
+        return { storeData };
+    },
+  
     methods:{
         addQuantity(breadId) {
             const bread = this.breads.find((b) => b.id === breadId);
@@ -149,14 +119,14 @@ export default{
     background-image: url("../assets/background.png");
     background-repeat: no-repeat;
     background-size: cover;  
-    height: calc(100vh - 100px);
+    min-height: calc(100vh - 100px);
 }
 
 .body{
     display: flex;
     justify-content: center;
     align-items: center;
-    height: calc(100vh - 100px);			
+    min-height: calc(100vh - 100px);			
 }
 
 .store{
@@ -174,19 +144,18 @@ export default{
 
 .left {
     grid-column: 1;
-    border: solid 2px black;
-
-
     /* Fills box and flushes content down */
     display: flex;
     flex-direction: column;
     justify-content: space-evenly;
     align-items: center;
+    background-color: rgba(245, 245, 220, 0.9);
+
 
 }
 
 #bakeryImage{
-    width: 50%;
+    width: 70%;
     height: auto;
     border-radius: 20px;
     border: solid 2px black;
@@ -194,7 +163,21 @@ export default{
 
 .right  {
     grid-column: 2;
-    border:  solid  2px blue;
+    background-color: rgba(245, 245, 220, 0.9);
+}
+
+#food_card{
+    display: flex;
+    justify-content: center; /* Centers children horizontally */
+    align-items: center; /* Centers children vertically */
+    height: auto; /* Adjust the height as needed, or leave as 'auto' */
+    width: auto; /* Adjust the width as needed, or leave as 'auto' */
+}
+
+.card-img-top {
+    width: 70%; /* Adjust as needed, or set a fixed width */
+    height: auto; /* Keeps the aspect ratio */
+    margin: 0 auto; /* This will help center the image if the parent is not a flex container */
 }
 
 
