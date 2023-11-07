@@ -248,7 +248,7 @@
 }
 
 #chest{
-	width: auto;
+	width: 80%;
 	height: auto;
 }
 
