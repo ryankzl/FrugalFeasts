@@ -70,9 +70,48 @@ export default {
       infowindowMarkerId: null,
       userMarkerLocation: null,
       directionsRenderer: null,
+      targetPlaceIds: [
+        'ChIJOWmPzaUZ2jERtgmyBock1Y4', 
+        'ChIJfwEEIqYZ2jER7KGqeEBPVLw', 
+        'ChIJMUALI68Z2jER6yrUp2Z11Xk'
+      ], // Add your target place IDs here
+
     };
   },
   methods: {
+    async loadGoogleMaps(apiKey) {
+  return new Promise((resolve, reject) => {
+    // Check if the google object is already defined
+    if (typeof google !== 'undefined') {
+      resolve();
+    } else if (document.querySelector('script[src^="https://maps.googleapis.com/maps/api/js"]')) {
+      // Check if the API script is already in the DOM
+      // If it is, wait for it to load
+      const checkForScript = () => {
+        if (typeof window.google !== 'undefined') {
+          resolve();
+        } else {
+          setTimeout(checkForScript, 100);
+        }
+      };
+      checkForScript();
+    } else {
+      // Create a script element for the Google Maps API
+      const script = document.createElement('script');
+      script.src = `https://maps.googleapis.com/maps/api/js?key=${apiKey}&libraries=places`;
+      script.async = true;
+      script.defer = true;
+
+      // Set up a callback function to resolve the promise when the script is loaded
+      script.onload = resolve;
+      script.onerror = reject;
+
+      // Add the script to the document's head
+      document.head.appendChild(script);
+    }
+  });
+},
+
     async initMap() {
       const map = await this.$refs.myMapRef.$mapPromise;
       this.service = new google.maps.places.PlacesService(map);
@@ -107,7 +146,7 @@ export default {
       const nearbyResults = await new Promise((resolve) => {
         this.service.nearbySearch({
           location: userLocation,
-          radius: 2000,
+          radius: 1000,
           type: 'bakery',
         }, (results, status) => {
           if (status === google.maps.places.PlacesServiceStatus.OK) {
@@ -119,6 +158,10 @@ export default {
       // Create markers for nearby bakeries
       console.log(nearbyResults);
       this.bakeries = nearbyResults;
+       // Filter out and create a marker only for the desired bakery
+      // this.bakeries = nearbyResults.filter(bakery => bakery.place_id === 'ChIJOWmPzaUZ2jERtgmyBock1Y4');
+      this.bakeries = nearbyResults.filter(bakery => this.targetPlaceIds.includes(bakery.place_id));
+
     },
     showBakeryDetails(bakery) {
       this.infowindowMarkerId = bakery.place_id;
@@ -168,11 +211,23 @@ export default {
     },
   },
   created() {
-    // Call the initMap function to initialize the map and services
-    this.initMap();
-    // Fetch nearby bakeries based on the postal code received as a prop
-    this.fetchNearbyBakeries();
-  },
+  // Call the loadGoogleMaps method to load the Google Maps API
+  this.loadGoogleMaps(import.meta.env.VITE_GOOGLE_MAP_API_KEY)
+    .then(() => {
+      // The Google Maps API is now loaded and ready to use
+      this.initMap();
+      this.fetchNearbyBakeries();
+    })
+    .catch((error) => {
+      console.error('Failed to load Google Maps API:', error);
+    });
+}
+  // created() {
+  //   // Call the initMap function to initialize the map and services
+  //   this.initMap();
+  //   // Fetch nearby bakeries based on the postal code received as a prop
+  //   this.fetchNearbyBakeries();
+  // },
 };
 </script>
 
