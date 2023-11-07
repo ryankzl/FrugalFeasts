@@ -46,6 +46,11 @@ export default{
 
 <style scoped>
 
+.card-img-top{
+  height: auto;
+  width: auto;
+}
+
 </style>
 
   

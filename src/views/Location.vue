@@ -239,12 +239,7 @@ export default {
 		},
 	
   
-  // created() {
-  //   // Call the initMap function to initialize the map and services
-  //   this.initMap();
-  //   // Fetch nearby bakeries based on the postal code received as a prop
-  //   this.fetchNearbyBakeries();
-  // },
+		
   	},
 
   	async created() {
