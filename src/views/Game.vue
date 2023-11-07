@@ -89,6 +89,7 @@
                 loss: 0,
                 totalBoxes: 0,
 				
+				
             }
         },
 		computed: {
