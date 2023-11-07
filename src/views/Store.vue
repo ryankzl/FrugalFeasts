@@ -18,7 +18,7 @@
                             </div>
                             <p>
                                 <!-- distance of the store from where the user is located -->
-                                <!-- the button will link back to the location page  -->
+                                <!-- the button will link to google maps showing the location from the user to the bakery  -->
                                 <a class="nes-btn is-primary" :href="bakeryInfo.googleMapsLink">📍{{bakeryInfo.distance}} km away</a>
                             </p>
                         </div>
@@ -77,7 +77,8 @@
                         <p>Would you like to confirm your order?</p>
                         <menu class="dialog-menu">
                             <button class="nes-btn">Cancel</button>
-                            <button class="nes-btn is-primary">Confirm</button>
+                            <!-- link to checkout page -->
+                            <a class="nes-btn is-primary" href="/Checkout">Confirm</a>
                         </menu>
                     </form>
                 </dialog>
@@ -102,7 +103,7 @@ export default{
                 address: '252 North Bridge Road, #B1-11, Raffles City Shopping Centre, Singapore 179103',
                 openingHours: '7.30am to 10pm',
                 distance: '', //distance from the user 
-                googleMapsLink: '/Location', // Link back to location page
+                googleMapsLink: '', // Link to google maps
                 bakeryImage: "/src/assets/bakery.jpg",
             }, 
             //list of bread objects 
@@ -195,7 +196,7 @@ export default{
 }
 
 .background{
-    background-image: url("../assets/home_background.jpg");
+    background-image: url("../assets/background.png");
     background-repeat: no-repeat;
     background-size: cover;
     background-attachment: fixed; 
