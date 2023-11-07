@@ -2,7 +2,7 @@
     <div class="background">
         <!-- Profile Card -->
         <div class="left_container">
-            <div class="card nes-container is-rounded" style="width: 100%; text-align: center;">
+            <div class="card nes-container is-rounded" style="width: 400px; text-align: center;">
                 <h3 style="text-align:center">Profile</h3>
                 <img class="card-img-top" style="height: 300px" src="../assets/profile male image.png">
                 <div class="card-body">
@@ -19,17 +19,18 @@
 
         <!-- "Hello world" text container -->
         <div class="right_container">
-            <div class="container" style="width: 1000px; height: 300px">
-                <div class="card nes-container is-rounded" style="text-align: center;">
+            <div class="container" style="width: 1000px;">
+                <div class="card nes-container is-rounded" style="text-align: center; height: 380px;">
                   <h3>Recent Purchases</h3>
                   <p>Lorem ipsum, dolor sit amet consectetur adipisicing elit. Explicabo nihil harum omnis quia cumque molestiae tempora quos placeat nulla. Facilis, fuga iure ullam sunt velit excepturi esse beatae totam cumque?</p>  
                   <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Sed ex ipsum dolorem temporibus commodi ullam totam facere sunt inventore exercitationem magnam accusamus placeat omnis aliquid, obcaecati consectetur voluptas adipisci. Facilis.</p>
+                  <p>Hello World</p>
                 </div>
             </div>
 
         <!-- Rewards -->
-            <div class="container" style="width: 1000px; height: 300px">
-                <div class="card nes-container is-rounded" style="background-color: lightblue; margin-top: 25px;">
+            <div class="container" style="width: 1000px;">
+                <div class="card nes-container is-rounded" style="background-color: lightblue; margin-top: 15px; height: 255px">
                     <h3 style="text-align:center">Rewards</h3>
                     <div class="card-body">
                         <p class="card-text">
