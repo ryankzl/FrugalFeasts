@@ -40,14 +40,23 @@
         </GMapInfoWindow>
       </GMapMap>
     </div>
+    
+	<StoreCards></StoreCards>
+
   </div>
   </section>
-  <section></section>
+  
 </template>
 
 <script>
+
+import StoreCards from "../components/StoreCards.vue"
+
 export default {
   name: 'Location',
+  components:{
+	StoreCards,
+  },
   data() {
     return {
       center: { lat: 1.3521, lng: 103.8198 },
@@ -173,11 +182,11 @@ export default {
     background-image: url("../assets/background.png");
     background-repeat: no-repeat;
     background-size: cover;  
-    height: calc(100vh - 100px);
+    height: 100%;
 }
 .body{
     display: flex;
-    justify-content: center;
+    justify-content: right;
     align-items: center;
     height: calc(100vh - 100px);			
 }
