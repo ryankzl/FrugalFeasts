@@ -47,7 +47,12 @@
                         </div>
                         <div class="row">
                             <!-- <router-link to="/Checkout">  -->
-                            <button class="nes-btn is-success checkout" @click="stockUpdate(); keysUpdate()">Checkout</button>
+                                <button class="nes-btn is-success checkout"
+                                :class="{ 'is-danger': isCheckoutDisabled }"
+                                @click="isCheckoutDisabled ? null : stockUpdate(); keysUpdate()"
+                                :disabled="isCheckoutDisabled">
+                                {{ isCheckoutDisabled ? 'No Items to Checkout' : 'Checkout' }}
+                                </button>
                             <!-- </router-link> -->
                         </div>
                     </div>
@@ -99,6 +104,12 @@ export default {
     mounted() {
         this.placeId = this.$route.params.placeId;
         this.fetchData();
+    },
+
+    computed: {
+        isCheckoutDisabled() {
+            return Object.values(this.customerQuantities).every(qty => qty === 0);
+        }
     },
 
     methods: {
@@ -282,6 +293,11 @@ export default {
     width: fit-content;
     align-self: center;
     margin-top: 20px;
+}
+
+.is-disabled {
+  background-color: red !important;
+  border-color: red !important;
 }
 
 
