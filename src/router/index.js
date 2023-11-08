@@ -45,9 +45,10 @@ const router = createRouter({
     },
 
     {
-      path: '/Store',
+      path: '/Store/:placeId',
       name: 'Store',
       component: () => import('../views/Store.vue'),
+      props: true,
     },
 
     {
