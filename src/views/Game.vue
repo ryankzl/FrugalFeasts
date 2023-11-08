@@ -2,11 +2,9 @@
 	<div class="background">
 		<!-- <div class="container-fluid body"> -->
 
-<<<<<<< HEAD
+
 			<div class="container-fluid game" style="min-width: fit-content;">
-=======
-			<div class="container-fluid game">
->>>>>>> 2239242b8107e30f5261d5827b56a2fe363c7214
+
 				<!-- First Row -->
 
 				<div class="details1">
@@ -232,7 +230,6 @@
     /* background-image: url("../assets/background.png");
     background-repeat: no-repeat;
     background-size: cover;  
-<<<<<<< HEAD
     height: calc(100vh - 100px); */
 
 	background-image: url("../assets/background.png");
@@ -242,48 +239,26 @@
     position: absolute;
     top: 100px;
     min-height: 100vh;
-=======
-	background-attachment: fixed;
-	position:absolute;
-    min-height: 100vh; 
-	width: 100%;
->>>>>>> 2239242b8107e30f5261d5827b56a2fe363c7214
 }
 /* .body{
     display: flex;
     justify-content: center;
-<<<<<<< HEAD
     align-items: center;	
 } */
-=======
-    align-items: center;
-    /* height: calc(100vh - 100px);			 */
-}
->>>>>>> 2239242b8107e30f5261d5827b56a2fe363c7214
 .game{
 	margin-top: 10%;
     margin-bottom: 10%;
 
     background-color: rgba(245, 245, 220, 0.9);
     padding: 2%;
-<<<<<<< HEAD
     width: 80%;
-=======
-	margin-top:5%;
-	margin-bottom:5%;
-    width: 85%;
->>>>>>> 2239242b8107e30f5261d5827b56a2fe363c7214
 	height: auto;
     text-align: center;
     border-radius: 20px; 
 	box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.2);
 
 	display: grid;
-<<<<<<< HEAD
 	grid-template-rows: auto 2fr ;
-=======
-	grid-template-rows: auto 2fr;
->>>>>>> 2239242b8107e30f5261d5827b56a2fe363c7214
 	grid-template-columns: 1fr 2fr 1fr;
 }
 
