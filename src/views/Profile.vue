@@ -1,52 +1,62 @@
 <template>
-    <div class="background">
-        <!-- Profile Card -->
-        <div class="left_container">
-            <div class="card nes-container is-rounded" style="width: 400px; text-align: center;">
-                <h3 style="text-align:center">Profile</h3>
-                <img class="card-img-top" style="height: 300px" src="../assets/profile male image.png">
-                <div class="card-body">
-                    <p class="card-text" style="text-align: center;">
-                        <br>
-                        Name: Ryan khoo Zun;<br>
-                        Email: ryan.zhoon@gamil.com <br>
-                        Contact: 9756 3409
-                    </p>
-                    <a img src="./home.html" class="nes-btn is-primary">Back Home</a>
-                </div>
-            </div>
-      </div>
+        <div class="background">
+        <div class="container-fluid body">
+            <div class="profile">
 
-        <!-- "Hello world" text container -->
-        <div class="right_container">
-            <div class="container" style="width: 1000px;">
-                <div class="card nes-container is-rounded" style="text-align: center; height: 380px;">
-                  <h3>Recent Purchases</h3>
-                  <p>Lorem ipsum, dolor sit amet consectetur adipisicing elit. Explicabo nihil harum omnis quia cumque molestiae tempora quos placeat nulla. Facilis, fuga iure ullam sunt velit excepturi esse beatae totam cumque?</p>  
-                  <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Sed ex ipsum dolorem temporibus commodi ullam totam facere sunt inventore exercitationem magnam accusamus placeat omnis aliquid, obcaecati consectetur voluptas adipisci. Facilis.</p>
-                  <p>Hello World</p>
+                <div class="card nes-container is-rounded left">
+                    <h1>Profile</h1>
+                    <img src="../assets/profile_avatar.png" id="profileImage">
+                    <h3> Ryan</h3>   
+                    <p>{{  userEmail }}</p>
+                    <button class="nes-btn" @click="logOut">Log Out</button>
                 </div>
-            </div>
 
-        <!-- Rewards -->
-            <div class="container" style="width: 1000px;">
-                <div class="card nes-container is-rounded" style="background-color: lightblue; margin-top: 15px; height: 255px">
-                    <h3 style="text-align:center">Rewards</h3>
-                    <div class="card-body">
-                        <p class="card-text">
-                        <br>
-                            <ul>
-                                <li> <span style="color:red">30%</span> off at Swee Heng Bakery</li>
-                                <li> <span style="color:red">40%</span> off at Toast Box</li>
-                                <li> <span style="color:red">15%</span> off at Zun Long House</li>
-                            </ul>
-                        </p>
-                    <a img src="./home.html" class="nes-btn is-primary">Back Home</a>
+                <div class="card nes-container is-rounded right">
+
+                    <h1 id="header">Rewards</h1>
+
+                    <div class="voucher">
+
+                        <div class="card">
+                            <img src="../assets/voucher_shyan.jpg" class="card-img-top">
+                            <div class="card-body">
+                                <h5 class="card-title">Voucher</h5>
+                                <p class="card-text">Remaining</p>
+                                <button class="nes-btn is-success">Redeem</button>    
+                                
+                            </div>
+                        </div>
+
+                        <div class="card">
+                            <img src="../assets/voucher_aly.jpg" class="card-img-top">
+                            <div class="card-body">
+                                <h5 class="card-title">Voucher</h5>
+                                <p class="card-text">Remaining</p>
+                                <button class="nes-btn is-success">Redeem</button>
+
+                            </div>
+                        </div>
+
+                        <div class="card" >
+                            <img src="../assets/voucher_vig.jpg" class="card-img-top" alt="...">
+                            <div class="card-body">
+                                <h5 class="card-title">Voucher</h5>
+                                <p class="card-text">Remaining</p>
+                                <button class="nes-btn is-success">Redeem</button>
+
+                            </div>
+                        </div>
                     </div>
+
+                 
                 </div>
+
+                
+
             </div>
         </div>
     </div>
+    
 </template>
 
 <script>
@@ -55,6 +65,16 @@
     
     export default{
         name: "Profile",
+
+        data() {
+            return {
+                userEmail: ""
+            }
+        },
+
+        created(){
+            this.fetchUserEmail();
+        },
         methods: {
             async logOut() {
                 try {
@@ -65,7 +85,21 @@
                     console.error("Logout Error:", error);
                     alert('Failed to log out. Please try again.');
                 }
-            }
+            },
+            fetchUserEmail() {
+                // Listen for changes to the user's sign-in state
+                auth.onAuthStateChanged(user => {
+                    if (user) {
+                        this.userEmail = user.email;
+                    } else {
+                        console.error("No user is logged in.");
+                        // Optionally redirect to the sign-in page
+                        router.push('/signin');
+                    }
+                });
+            },
+
+
         }
     };
 </script>
@@ -75,39 +109,67 @@
     background-image: url("../assets/background.png");
     background-repeat: no-repeat;
     background-size: cover;  
-    height: calc(100vh - 100px);
+    min-height: calc(100vh - 100px);
+}
+
+.body{
     display: flex;
-    justify-content: flex-start;
+    justify-content: center;
+    align-items: center;
+    min-height: calc(100vh - 100px);		
+    
 }
 .profile{
-    text-align: center;
-    background-color: cyan;
-    margin-top: 100px;
-}
-.left_container {
-          margin-left: 10px;
-          margin-top: 20px;
-      }
-
-      /* Style the text "Hello world" container */
-.right_container {
-          margin-top: 20px;
-          margin-left: 10px;
-          text-align: center;
-      }
-
-/* .game{
     background-color: rgba(245, 245, 220, 0.9);
     padding: 2%;
     width: 85%;
-	height: 85%;
     text-align: center;
     border-radius: 20px; 
 	box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.2);
 
-	display: grid;
-	grid-template-rows: auto 2fr 1fr;
-	grid-template-columns: 1fr 2fr 1fr;
-} */
+    margin-top: 20px;
+    margin-bottom: 20px;
+
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+}
+
+.left {
+    grid-column: 1;
+    /* Fills box and flushes content down */
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    align-items: center;
+    background-color: rgba(245, 245, 220, 0.9);
+
+}
+
+#profileImage{
+    width: 80%;
+    height: auto;
+}
+
+.right  {
+    /* grid-column: 2; */
+    background-color: rgba(245, 245, 220, 0.9);
+    
+}
+
+.voucher{
+    display: flex;
+}
+
+.card-img-top, .voucherImage{
+    width: auto;
+    height: auto;
+}
+
+.form{
+    display:grid;
+    
+
+}
+
 
 </style>
