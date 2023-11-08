@@ -1,5 +1,6 @@
 <template>
     <section class="p-5 background">
+      <!-- Find your bakery box -->
       <div class="mx-auto d-flex align-items-center justify-content-center text-center" style="flex-direction: column;">
         <h2 class="mb-5 mt-0 col-sm-6 text-dark searchbar">Find Your Closest Bakery</h2>
         <div class="col-12 col-sm-6 -center">
@@ -7,6 +8,7 @@
             <div class="card-header bg-dark project-name" id="header">
               <h5 class="text-white fw-bold">SEARCH NEAREST BAKERY</h5>
             </div>
+            <!-- Search box -->
             <div class="card-body search-bg p-4">
               <form @submit.prevent="navigateToLocation()">
                 <div class="form-group">

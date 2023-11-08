@@ -12,6 +12,15 @@ Game page -> Our game is a gacha game that provides you the opportunity to get e
             where you would be able to earn attractive vouchers for your next purchases.
 About Us Page -> More information about our website and the different pages. It also educates on food wastage
 
+### Login to test functionalities
+
+```
+email: tester@gmail.com
+password: tester
+```
+
+###
+
 ## Recommended IDE Setup
 
 [VSCode](https://code.visualstudio.com/) + [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar) (and disable Vetur) + [TypeScript Vue Plugin (Volar)](https://marketplace.visualstudio.com/items?itemName=Vue.vscode-typescript-vue-plugin).

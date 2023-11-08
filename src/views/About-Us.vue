@@ -4,7 +4,7 @@
             <div class="container buttons">
                 <div class="row">
                         
-                        <!-- button 1 -->
+                        <!-- button 1  (about our company)-->
                         <div class="col-lg-3 col-md-5 my-3">
                             <button type="button" class="nes-btn bg-white bigBtn" onclick="document.getElementById('dialog-dark-rounded1').showModal();">
                             <img src="/src/assets/header_logo.png" style="width: 150px; height: 150px;">
@@ -23,7 +23,7 @@
                             </dialog>
                         </div>
                         
-                        <!-- button 2 -->
+                        <!-- button 2 (How to use our app)-->
                         <div class="col-lg-3 col-md-5 my-3">
                             <button type="button" class="nes-btn bg-white bigBtn" onclick="document.getElementById('dialog-dark-rounded3').showModal();">
                                 <img src="/src/assets/questionMark.png" style="width: 150px; height: 150px;">
@@ -66,7 +66,7 @@
                             </dialog>
                         </div>
                         
-                        <!-- button 3 -->
+                        <!-- button 3 (More on our game) -->
                         <div class="col-lg-3 col-md-5 my-3">
                             <button type="button" class="nes-btn bg-white bigBtn" onclick="document.getElementById('dialog-dark-rounded4').showModal();">
                                 <img src="/src/assets/videogame.png" style="width: 150px; height: 150px;">
@@ -91,7 +91,7 @@
                             </dialog>
                         </div>
             
-                        <!-- button 4 -->
+                        <!-- button 4 (our mission and promoting food wastage)-->
                         <div class="col-lg-3 col-md-5 my-3">
                             <button type="button" class="nes-btn bg-white bigBtn" onclick="document.getElementById('dialog-dark-rounded2').showModal();">
                                 <img src="/src/assets/foodwaste.png" style="width: 150px; height: 150px;">

@@ -3,6 +3,7 @@
     <div class="background">
         <div class="container-fluid body">
             <div class="details">
+                <!-- Message to confirm order and keys earned -->
                 <h1>Thank you for your purchase!</h1>
                 
                 <h3>{{ keysEarned }} <img src="../assets/game_key.png"> Earned!</h3>

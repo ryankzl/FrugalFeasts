@@ -5,6 +5,7 @@
             <PopUp ref="popup"></PopUp>
             
             <div class="container-fluid form">
+                <!-- Create account/Login -->
                 <h3 v-if="isSignUpMode">Create An Account!</h3>
                 <h3 v-else>Log In!</h3>
 

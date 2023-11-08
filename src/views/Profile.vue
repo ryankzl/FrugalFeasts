@@ -1,8 +1,9 @@
 <template>
         <div class="background">
+            <!-- Content box -->
         <div class="container-fluid body">
             <div class="profile d-flex justify-content-center">
-
+                <!-- profile card -->
                 <div class="card nes-container is-rounded left col-lg-5">
                     <h1>Profile</h1>
                     <img src="../assets/profile_avatar.png" id="profileImage">
@@ -11,8 +12,8 @@
                     <button class="nes-btn" @click="logOut">Log Out</button>
                 </div>
 
+                <!-- Voucher display card -->
                 <div class="card nes-container is-rounded right col-lg-5">
-
                     <h1 id="header">Rewards</h1>
 
                     <div class="voucher">
@@ -46,7 +47,7 @@
                         </div>
                     </div>
                 </div>
-
+                <!-- QR code generated (fixed) -->
                 <div class="dialog-container" v-if="showDialog">
                     <div class="nes-dialog is-dark is-rounded" id="qr-dialog">
                         <img src="../assets/randomqr.png" alt="QR Code" />

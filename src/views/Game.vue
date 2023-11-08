@@ -3,9 +3,9 @@
 		<!-- <div class="container-fluid body"> -->
 
 
-			<div class="container-fluid game" style="min-width: fit-content;">
+			<div class="container-fluid game" style="min-width: fit-content; margin-left: 40px; margin-right:40px;">
 
-				<!-- First Row -->
+				<!-- Key details and game history -->
 
 				<div class="details1">
 					Keys Required: 5
