@@ -1,5 +1,5 @@
 <template>
-   <div class="container-fluid">
+   <div class="container-fluid mt-2">
         <div class="card-group">
           
             <div class="card" v-for="(place, index) in placesData" :key="index">

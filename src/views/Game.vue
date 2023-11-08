@@ -2,7 +2,7 @@
 	<div class="background">
 		<div class="container-fluid body">
 
-			<div class="container-fluid flex game">
+			<div class="container-fluid game">
 				<!-- First Row -->
 
 				<div class="details1">
@@ -225,25 +225,30 @@
     background-image: url("../assets/background.png");
     background-repeat: no-repeat;
     background-size: cover;  
-    height: calc(100vh - 100px);
+	background-attachment: fixed;
+	position:absolute;
+    min-height: 100vh; 
+	width: 100%;
 }
 .body{
     display: flex;
     justify-content: center;
     align-items: center;
-    height: calc(100vh - 100px);			
+    /* height: calc(100vh - 100px);			 */
 }
 .game{
     background-color: rgba(245, 245, 220, 0.9);
     padding: 2%;
+	margin-top:5%;
+	margin-bottom:5%;
     width: 85%;
-	height: 85%;
+	height: auto;
     text-align: center;
     border-radius: 20px; 
 	box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.2);
 
 	display: grid;
-	grid-template-rows: auto 2fr 1fr;
+	grid-template-rows: auto 2fr;
 	grid-template-columns: 1fr 2fr 1fr;
 }
 

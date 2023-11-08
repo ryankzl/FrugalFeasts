@@ -1,49 +1,57 @@
 <template>
-  <section class="p-5 background">
-    <div class="mx-auto d-flex align-items-center justify-content-center text-center" style="flex-direction: column;">
-      <div class="card w-40" style="max-width: 700px; background-color: grey; padding: 20px;">
-        <div class="card-header bg-dark project-name" id="header">
-          <h5 class="text-white fw-bold">Results</h5>
-        </div>
-      <GMapMap
-        :center="center"
-        :zoom="15"
-        map-type-id="terrain"
-        style="width: 50vw; height: 300px"
-        ref="myMapRef"
-        :clickable="false"
-      >
-        <GMapMarker 
-          v-if="userMarkerLocation"
-          :position="userMarkerLocation.position"
-          :clickable="userMarkerLocation.clickable"
-          :icon="userMarkerLocation.icon"
-        />
-        <GMapMarker
-          :key="index"
-          v-for="(bakery, index) in bakeries"
-          :position="bakery.geometry.location"
-          :clickable="true"
-          @click="showBakeryDetails(bakery)"
-          @rightclick="getDirections()"
-          :id="bakery.place_id"
-        />
-        <GMapInfoWindow :closeclick="true" @closeclick="openMarker(null)" :opened="infowindowMarkerId !== null"
-          style="width: 300px; height: 100px"
-          :position="infoCoordinates"
-        >
-          <div>
-            <h4 style="font-family: Arial, Helvetica, sans-serif;">{{ selectedPlaceName }}</h4>
-            <p>{{ selectedPlaceAddress }}</p>
-            <p><a :href="link">View on Google Maps</a></p>
-          </div>
-        </GMapInfoWindow>
-      </GMapMap>
-    </div>
+  <section class="background">
+		<div class="mx-auto d-flex align-items-center justify-content-center text-center yellow-grid" style="flex-direction: column;">
+      	<div class="container">
+			<div class="row d-flex justify-content-center">
+				<div class="card col-6" style="max-width: 700px; background-color: grey; padding: 20px;">
+				<div class="card-header bg-dark project-name" id="header">
+				<h5 class="text-white fw-bold">Results</h5>
+				</div>
+			<GMapMap
+				:center="center"
+				:zoom="15"
+				map-type-id="terrain"
+				style="width: 100% ; height: 300px"
+				ref="myMapRef"
+				:clickable="false"
+			>
+				<GMapMarker 
+				v-if="userMarkerLocation"
+				:position="userMarkerLocation.position"
+				:clickable="userMarkerLocation.clickable"
+				:icon="userMarkerLocation.icon"
+				/>
+				<GMapMarker
+				:key="index"
+				v-for="(bakery, index) in bakeries"
+				:position="bakery.geometry.location"
+				:clickable="true"
+				@click="showBakeryDetails(bakery)"
+				@rightclick="getDirections()"
+				:id="bakery.place_id"
+				/>
+				<GMapInfoWindow :closeclick="true" @closeclick="openMarker(null)" :opened="infowindowMarkerId !== null"
+				style="width: 300px; height: 100px"
+				:position="infoCoordinates"
+				>
+				<div>
+					<h4 style="font-family: Arial, Helvetica, sans-serif;">{{ selectedPlaceName }}</h4>
+					<p>{{ selectedPlaceAddress }}</p>
+					<p><a :href="link">View on Google Maps</a></p>
+				</div>
+				</GMapInfoWindow>
+			</GMapMap>
+			
+			</div>
+		</div>
+	</div>
+		
     
 	<StoreCards :placesData="placesWithDetails"></StoreCards>
 
   </div>
+
+    
   </section>
   
 </template>
@@ -299,7 +307,12 @@ export default {
     background-image: url("../assets/background.png");
     background-repeat: no-repeat;
     background-size: cover;  
-    height: 100%;
+	background-attachment: fixed;
+	position:absolute;
+	top: 50px;
+    min-height: 100vh;
+	width:100%;
+	
 }
 .body{
     display: flex;
@@ -307,4 +320,19 @@ export default {
     align-items: center;
     height: calc(100vh - 100px);			
 }
+
+.yellow-grid{
+    margin-top: 5%;
+    margin-bottom: 5%;
+
+    background-color: rgba(245, 245, 220, 0.9);
+    padding: 2%;
+    width: 85%;
+	height: auto;
+    text-align: center;
+    border-radius: 20px; 
+	box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.2);
+
+}
+
 </style>
