@@ -38,7 +38,7 @@
                                             <a href="/">Homepage</a>
                                         </li> 
                                         <li>
-                                            <a href="/">Location page</a> accessed from Homepage after you have input your destination
+                                            <a href="/">Location page</a> which is accessed from Homepage after you have input your destination
                                         </li>
                                         <li>
                                             <a href="/Store">Store page</a> to show you all the products the store offers

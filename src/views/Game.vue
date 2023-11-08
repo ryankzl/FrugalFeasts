@@ -1,8 +1,8 @@
 <template>
 	<div class="background">
-		<div class="container-fluid body">
+		<!-- <div class="container-fluid body"> -->
 
-			<div class="container-fluid flex game">
+			<div class="container-fluid game" style="min-width: fit-content;">
 				<!-- First Row -->
 
 				<div class="details1">
@@ -64,7 +64,6 @@
 					
 				
 			</div>
-		</div>
 
 		
 	</div>
@@ -213,6 +212,10 @@
 				}
 			},
 
+			// ifContainerFits() {
+
+			// }
+
         }
     };
 	
@@ -222,28 +225,38 @@
 
 <style scoped>
 .background{
-    background-image: url("../assets/background.png");
+    /* background-image: url("../assets/background.png");
     background-repeat: no-repeat;
     background-size: cover;  
-    height: calc(100vh - 100px);
+    height: calc(100vh - 100px); */
+
+	background-image: url("../assets/background.png");
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-attachment: fixed; 
+    position: absolute;
+    top: 100px;
+    min-height: 100vh;
 }
-.body{
+/* .body{
     display: flex;
     justify-content: center;
-    align-items: center;
-    height: calc(100vh - 100px);			
-}
+    align-items: center;	
+} */
 .game{
+	margin-top: 10%;
+    margin-bottom: 10%;
+
     background-color: rgba(245, 245, 220, 0.9);
     padding: 2%;
-    width: 85%;
-	height: 85%;
+    width: 80%;
+	height: auto;
     text-align: center;
     border-radius: 20px; 
 	box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.2);
 
 	display: grid;
-	grid-template-rows: auto 2fr 1fr;
+	grid-template-rows: auto 2fr ;
 	grid-template-columns: 1fr 2fr 1fr;
 }
 
