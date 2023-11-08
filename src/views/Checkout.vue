@@ -4,8 +4,10 @@
         <div class="container-fluid body">
             <div class="details">
                 <h1>Thank you for your purchase!</h1>
-
-                <h3>You have earned XXX keys. Head to Profile to check them out!</h3>
+                
+                <h3>{{ keysEarned }} <img src="../assets/game_key.png"> Earned!</h3>
+                
+                <p>Check out <router-link to="/Game">Games!</router-link> to earn rewards!</p>
             </div>
         </div>
     </div>
@@ -19,6 +21,16 @@
 
 export default {
     name: "Checkout",
+    data() {
+        return {
+            keysEarned: 0,
+        };
+    },
+    created() {
+        if (this.$route.query.keysEarned) {
+            this.keysEarned = parseInt(this.$route.query.keysEarned, 10);
+        }
+    }
 }
        
 </script>

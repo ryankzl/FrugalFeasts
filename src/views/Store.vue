@@ -5,7 +5,7 @@
             <div class="store">
                     <!-- Store Details -->
                     <div class="card nes-container is-rounded left">
-                            <img src="../assets/food_croissant.png" id="bakeryImage">
+                            <img :src="`/src/assets/${placeId}.png`" id="bakeryImage">
                             <h3>{{ storeData.name }}</h3>   
                             <small><p>{{ storeData.address }}</p></small>
                             <p>Closes At: {{ storeData.closing_time }}</p>
@@ -69,39 +69,48 @@ import { getDoc, doc, runTransaction, updateDoc, increment } from "../../node_mo
 
 export default {
     name: "Store",
-    props: {
-        placesData: {
-            type: Array,
-            default: () => []
-        }
-    },
+    // props: {
+    //     placesData: {
+    //         type: Array,
+    //         default: () => []
+    //     }
+    // },
 
     data() {
         return {
         storeData: {
             name: '',
             address: '',
-            closingtime: '',
+            closing_time: '',
             breads: []
         },
-        customerQuantities: {}
+        customerQuantities: {},
+        placeId:"",
         };
     },
 
+    // props: {
+    //   placesData: {
+    //     type: Array,
+    //     default: () => []
+    //   }
+    // },
+
     mounted() {
+        this.placeId = this.$route.params.placeId;
         this.fetchData();
     },
 
     methods: {
-        async fetchData() {
-            const docRef = doc(db, "business", "ChIJfwEEIqYZ2jER7KGqeEBPVLw");
+        async fetchData() {         
+            const docRef = doc(db, "business", this.placeId);
             const docSnap = await getDoc(docRef);
 
             if (docSnap.exists()) {
                 const data = docSnap.data();
                 this.storeData.name = data.name;
                 this.storeData.address = data.address;
-                this.storeData.closeTime = data.closing_time;
+                this.storeData.closing_time = data.closing_time;
                 this.storeData.breads = Object.entries(data.food).map(([key, value]) => ({
                 id: key,
                 price: value[0], // Here the first element is price
@@ -135,7 +144,7 @@ export default {
         async stockUpdate() {
             try {
                 await runTransaction(db, async (transaction) => {
-                    const docRef = doc(db, "business", "ChIJfwEEIqYZ2jER7KGqeEBPVLw");
+                    const docRef = doc(db, "business", this.placeId);
                     const snapshot = await transaction.get(docRef);
 
                     if (!snapshot.exists) {
@@ -182,12 +191,14 @@ export default {
                 });
 
                 console.log('Keys successfully incremented!');
+                // Inside the keysUpdate method, after keys are successfully incremented
+                this.$router.push({ name: 'Checkout', query: { keysEarned: keysToAdd } });
+
             } catch (e) {
                 console.error("Failed to increment keys: ", e);
             }
 
         }
-        // Update User Purchases
 
             
 

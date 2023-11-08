@@ -75,11 +75,11 @@ export default {
 			infowindowMarkerId: null,
 			userMarkerLocation: null,
 			directionsRenderer: null,
-			targetPlaceIds: [
-				'ChIJOWmPzaUZ2jERtgmyBock1Y4', 
-				'ChIJfwEEIqYZ2jER7KGqeEBPVLw', 
-				'ChIJMUALI68Z2jER6yrUp2Z11Xk'
-			], // Add your target place IDs here
+			// targetPlaceIds: [
+			// 	'ChIJOWmPzaUZ2jERtgmyBock1Y4', 
+			// 	'ChIJfwEEIqYZ2jER7KGqeEBPVLw', 
+			// 	'ChIJMUALI68Z2jER6yrUp2Z11Xk'
+			// ], // Add your target place IDs here
 			placesWithDetails: [],
 			
 
@@ -231,7 +231,6 @@ export default {
 
 			const documentIds = snapshot.docs.map(doc => doc.id);
 			console.log(documentIds); // Output the array of document IDs to the console
-			console.log(this.targetPlaceIds);
 
 			// If you need to do something with the document IDs, you can do that here
 			// For example, storing them in the component's data:
@@ -247,8 +246,8 @@ export default {
 			if (docSnap.exists()) {
 				placesData.push({
           			name: docSnap.data().name, // Assuming 'name' is a field in your document
-					
           			address: docSnap.data().address, // Assuming 'address' is a field in your document
+					closing_time: docSnap.data().closing_time,
           			id: placeId,
 				});
 		} else {

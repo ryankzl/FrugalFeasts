@@ -71,12 +71,10 @@
      
 </template>
 
-
 <script>
 	import { auth } from "../firebase";
 	import { db } from "../firebase";
     import { getDoc, doc, updateDoc, increment} from "../../node_modules/firebase/firestore";
-
 
     export default{
         name: "Game",
