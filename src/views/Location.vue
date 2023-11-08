@@ -41,7 +41,7 @@
       </GMapMap>
     </div>
     
-	<StoreCards></StoreCards>
+	<StoreCards :placesData="placesWithDetails"></StoreCards>
 
   </div>
   </section>
@@ -80,7 +80,7 @@ export default {
 				'ChIJfwEEIqYZ2jER7KGqeEBPVLw', 
 				'ChIJMUALI68Z2jER6yrUp2Z11Xk'
 			], // Add your target place IDs here
-
+			placesWithDetails: [],
 			
 
     	};
@@ -238,26 +238,60 @@ export default {
 			this.placeIds = documentIds;
 		},
 	
+		async fetchPlacesWithDetails() {
+    	const placesData = [];
+    	for (const placeId of this.placeIds) {
+			const docRef = doc(db, "business", placeId);
+			const docSnap = await getDoc(docRef);
+
+			if (docSnap.exists()) {
+				placesData.push({
+          			name: docSnap.data().name, // Assuming 'name' is a field in your document
+					
+          			address: docSnap.data().address, // Assuming 'address' is a field in your document
+          			id: placeId,
+				});
+		} else {
+			console.log("No such document!");
+		}
+	}
+      // Fetch details for each placeId from Google Maps API or Firestore
+      // Assume we have a method getPlaceDetails that fetches the place details
+    //   const details = await this.getPlaceDetails(placeId);
+    //   placesData.push(details);
+    // }
+    this.placesWithDetails = placesData;
+  },
   
 		
   	},
 
   	async created() {
-
+		try{
 		await this.fetchPlaceIds();
 	
   		// Call the loadGoogleMaps method to load the Google Maps API
-		this.loadGoogleMaps(import.meta.env.VITE_GOOGLE_MAP_API_KEY)
-			.then(() => {
+		await this.loadGoogleMaps(import.meta.env.VITE_GOOGLE_MAP_API_KEY)
+			// .then(async() => {
 				// The Google Maps API is now loaded and ready to use
-				this.initMap();
-				this.fetchNearbyBakeries();
-			})
-			.catch((error) => {
+		await this.initMap();
+		await this.fetchNearbyBakeries();
+		await this.fetchPlacesWithDetails();
+			// })
+		} catch(error) {
 				console.error('Failed to load Google Maps API:', error);
-			});
+			}
+	// 	await this.fetchPlaceDetails();
+
+	// 	this.fetchPlaceDetails().then(() => {
+    //   // Post-fetch logic, if necessary
+    // }).catch((error) => {
+    //   console.error("Error in fetchPlaceDetails:", error);
+    // });
+	
 	}
-};
+	};
+	
 </script>
 
 

@@ -8,7 +8,7 @@
                             <img src="../assets/food_croissant.png" id="bakeryImage">
                             <h3>{{ storeData.name }}</h3>   
                             <small><p>{{ storeData.address }}</p></small>
-                            <p>Closes At: {{ storeData.closeTime }}</p>
+                            <p>Closes At: {{ storeData.closing_time }}</p>
                             <!-- Would like to link this to external google maps later -->
                             <button class="nes-btn" id="directions">📍Directions</button>
                     </div>
@@ -69,13 +69,19 @@ import { getDoc, doc, runTransaction, updateDoc, increment } from "../../node_mo
 
 export default {
     name: "Store",
+    props: {
+        placesData: {
+            type: Array,
+            default: () => []
+        }
+    },
 
     data() {
         return {
         storeData: {
             name: '',
             address: '',
-            closeTime: '',
+            closingtime: '',
             breads: []
         },
         customerQuantities: {}
