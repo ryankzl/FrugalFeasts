@@ -1,7 +1,7 @@
 <template>
     <section class="p-5 background">
       <div class="mx-auto d-flex align-items-center justify-content-center text-center" style="flex-direction: column;">
-        <h2 class="mb-5 mt-0 col-sm-6">Find Your Closest Bakery</h2>
+        <h2 class="mb-5 mt-0 col-sm-6 text-dark searchbar">Find Your Closest Bakery</h2>
         <div class="col-12 col-sm-6 -center">
           <div class="card w-100 mt-5">
             <div class="card-header bg-dark project-name" id="header">
@@ -48,7 +48,11 @@
     background-image: url("../assets/background.png");
     background-repeat: no-repeat;
     background-size: cover;  
-    height: calc(100vh - 100px);
+    background-attachment: fixed;
+	  position: absolute;
+    min-height: 100vh; 
+	  width: 100%;
+    /* height: calc(100vh - 100px); */
 }
 .body{
     display: flex;
