@@ -106,7 +106,7 @@
                                 more food has to be sourced to meet the food demand and this affects our food security since 
                                 Singapore imports over 90% of our food supply. Hence, it is important for us to play our part 
                                 to reduce food waste.</p>
-                            <a href="https://www.towardszerowaste.gov.sg/foodwaste/" style="color: blueviolet;">Link to more information</a>
+                            <a href="https://www.towardszerowaste.gov.sg/foodwaste/" style="color: blueviolet;" target="_blank">Link to more information</a>
                             <menu class="dialog-menu" style="text-align: center;">
                                 <button class="nes-btn">Return to About-Us Page</button>
                             </menu>
