@@ -1,9 +1,9 @@
 <template>
         <div class="background">
         <div class="container-fluid body">
-            <div class="profile">
+            <div class="profile d-flex justify-content-center">
 
-                <div class="card nes-container is-rounded left">
+                <div class="card nes-container is-rounded left col-lg-5">
                     <h1>Profile</h1>
                     <img src="../assets/profile_avatar.png" id="profileImage">
                     <h3> Ryan</h3>   
@@ -11,13 +11,13 @@
                     <button class="nes-btn" @click="logOut">Log Out</button>
                 </div>
 
-                <div class="card nes-container is-rounded right">
+                <div class="card nes-container is-rounded right col-lg-5">
 
                     <h1 id="header">Rewards</h1>
 
                     <div class="voucher">
 
-                        <div class="card">
+                        <div class="card col-sm-6 col-md-4 ">
                             <img src="../assets/voucher_shyan.jpg" class="card-img-top">
                             <div class="card-body">
                                 <h5 class="card-title">Voucher</h5>
@@ -27,7 +27,7 @@
                             </div>
                         </div>
 
-                        <div class="card">
+                        <div class="card col-sm-6 col-md-4">
                             <img src="../assets/voucher_aly.jpg" class="card-img-top">
                             <div class="card-body">
                                 <h5 class="card-title">Voucher</h5>
@@ -36,7 +36,7 @@
                             </div>
                         </div>
 
-                        <div class="card" >
+                        <div class="card col-sm-6 col-md-4" >
                             <img src="../assets/voucher_vig.jpg" class="card-img-top" alt="...">
                             <div class="card-body">
                                 <h5 class="card-title">Voucher</h5>
@@ -192,14 +192,20 @@
 }
 
 .body{
-    display: flex;
-    justify-content: center;
+    /* display: flex;
+    flex-wrap: wrap;
+    justify-content: center; */
     align-items: center;
     min-height: calc(100vh - 100px);		
     
 }
 .profile{
-    background-color: rgba(245, 245, 220, 0.9);
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    min-height: calc(100vh - 100px);
+    /* background-color: rgba(245, 245, 220, 0.9);
     padding: 2%;
     width: 85%;
     text-align: center;
@@ -210,7 +216,7 @@
     margin-bottom: 20px;
 
     display: grid;
-    grid-template-columns: 1fr 2fr;
+    grid-template-columns: 1fr 2fr; */
 }
 
 .left {
@@ -225,11 +231,17 @@
 }
 
 #profileImage{
-    width: 80%;
+    width: 45%;
     height: auto;
 }
 
 .right  {
+    /* padding: auto;
+    grid-column: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    align-items: center; */
     /* grid-column: 2; */
     background-color: rgba(245, 245, 220, 0.9);
     
@@ -237,6 +249,8 @@
 
 .voucher{
     display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
 }
 
 .card-img-top, .voucherImage{
@@ -273,5 +287,53 @@
     height: auto;
 }
 
+/* Styles added for responsiveness */
+@media (max-width: 1500px) {
+    /* Adjust font-sizes for medium screens like tablets */
+    .card-title, .card-text {
+        font-size: 0.7rem; /* Smaller font size */
+    }
+}
+
+/* @media (max-width: 1500px) { */
+    /* Adjust font-sizes for medium screens like tablets */
+    /* .card-title{
+        font-size: 0.7rem; /* Smaller font size */
+        /* padding: 22px;  */
+
+@media (max-width: 768px) {
+    /* For small screens like mobile devices, stack the voucher cards */
+    .voucher {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .card {
+        width: 100%; /* Full width cards for smaller screens */
+        margin-bottom: 1rem; /* Add some space between the cards */
+    }
+
+    /* Adjust font-sizes for smaller screens */
+    .card-title, .card-text {
+        font-size: 0.8rem; /* Even smaller font size */
+    }
+
+    /* Adjust button size for better touch interaction */
+    .nes-btn {
+        padding: 10px 20px; /* Larger padding */
+        font-size: 0.8rem; /* Match the font-size with the text */
+    }
+}
+
+@media (max-width: 480px) {
+    /* For very small screens, make further adjustments as needed */
+    .card-body {
+        padding: 0.5rem; /* Reduce padding inside the card */
+    }
+
+    .card-title, .card-text {
+        font-size: 0.7rem; /* Adjust font size for very small screens */
+    }
+}
 
 </style>
