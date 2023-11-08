@@ -18,7 +18,7 @@
                     <div class="voucher">
 
                         <div class="card col-sm-6 col-md-4 ">
-                            <img src="../assets/voucher_shyan.jpg" class="card-img-top">
+                            <img src="../assets/ChIJMUALI68Z2jER6yrUp2Z11Xk.png" class="card-img-top">
                             <div class="card-body">
                                 <h5 class="card-title">Voucher</h5>
                                 <p class="card-text">Remaining {{ voucher1 }}</p>
@@ -28,7 +28,7 @@
                         </div>
 
                         <div class="card col-sm-6 col-md-4">
-                            <img src="../assets/voucher_aly.jpg" class="card-img-top">
+                            <img src="../assets/ChIJOWmPzaUZ2jERtgmyBock1Y4.png" class="card-img-top">
                             <div class="card-body">
                                 <h5 class="card-title">Voucher</h5>
                                 <p class="card-text">Remaining {{ voucher2 }}</p>
@@ -37,7 +37,7 @@
                         </div>
 
                         <div class="card col-sm-6 col-md-4" >
-                            <img src="../assets/voucher_vig.jpg" class="card-img-top" alt="...">
+                            <img src="../assets/ChIJfwEEIqYZ2jER7KGqeEBPVLw.png" class="card-img-top" alt="...">
                             <div class="card-body">
                                 <h5 class="card-title">Voucher</h5>
                                 <p class="card-text">Remaining {{ voucher3 }}</p>
@@ -49,7 +49,7 @@
 
                 <div class="dialog-container" v-if="showDialog">
                     <div class="nes-dialog is-dark is-rounded" id="qr-dialog">
-                        <img src="../assets/qr_ken.jpg" alt="QR Code" />
+                        <img src="../assets/randomqr.png" alt="QR Code" />
                         <button class="nes-btn" @click="showDialog = false">Close</button>
                     </div>
                 </div>
